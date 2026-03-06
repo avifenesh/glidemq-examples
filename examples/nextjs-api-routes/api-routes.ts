@@ -52,7 +52,10 @@ export async function POST(request: Request) {
   const job = await queue.add(type, payload, {
     // Deduplicate by a unique key so the same request sent twice
     // does not create two jobs.
-    jobId: payload.idempotencyKey,
+    deduplication: {
+      id: payload.idempotencyKey,
+      ttl: 3600000, // 1 hour
+    },
   });
 
   if (!job) {
