@@ -1,0 +1,21 @@
+{
+  "name": "glidemq-example-express-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Express dashboard for monitoring and managing glide-mq queues",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest",
+    "@glidemq/speedkey": "latest",
+    "@glidemq/dashboard": "latest",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "@types/node": "^22",
+    "@types/express": "^5.0.6"
+  }
+}

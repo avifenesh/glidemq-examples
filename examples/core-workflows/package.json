@@ -1,0 +1,18 @@
+{
+  "name": "glidemq-example-core-workflows",
+  "version": "1.0.0",
+  "private": true,
+  "description": "glide-mq workflows: FlowProducer, chain, group, chord pipelines",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest",
+    "@glidemq/speedkey": "latest"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "@types/node": "^22"
+  }
+}

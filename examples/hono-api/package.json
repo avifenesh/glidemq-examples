@@ -1,0 +1,21 @@
+{
+  "name": "glidemq-example-hono-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hono REST API + SSE events for glide-mq queue management",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest",
+    "@glidemq/speedkey": "latest",
+    "@glidemq/hono": "latest",
+    "hono": "^4",
+    "@hono/node-server": "^1"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "@types/node": "^22"
+  }
+}
