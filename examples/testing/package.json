@@ -1,0 +1,17 @@
+{
+  "name": "glidemq-example-testing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "In-memory testing with glide-mq TestQueue and TestWorker",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "glide-mq": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "vitest": "^3.0.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "glidemq-example-webhook-delivery",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reliable webhook delivery with exponential backoff, rate limiting, deduplication, and DLQ",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "@glidemq/speedkey": "latest",
+    "glide-mq": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

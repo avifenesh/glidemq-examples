@@ -46,7 +46,7 @@ These frameworks need no special package - just `import { Queue, Worker } from '
 | [hono-basic](examples/hono-basic) | Hono | Ready |
 | [express-basic](examples/express-basic) | Express | [Planned (#3)](https://github.com/avifenesh/glidemq-examples/issues/3) |
 | [koa-basic](examples/koa-basic) | Koa | [Planned (#4)](https://github.com/avifenesh/glidemq-examples/issues/4) |
-| [nextjs-api-routes](examples/nextjs-api-routes) | Next.js | [Planned (#5)](https://github.com/avifenesh/glidemq-examples/issues/5) |
+| [nextjs-api-routes](examples/nextjs-api-routes) | Next.js | Ready |
 
 ### Planned Framework Packages
 
@@ -63,13 +63,13 @@ Real-world patterns showing how to solve common problems with glide-mq.
 
 | Example | Description | Status |
 |---------|-------------|--------|
-| [email-service](examples/email-service) | Email queue with retries and DLQ | [Planned (#6)](https://github.com/avifenesh/glidemq-examples/issues/6) |
-| [image-processing](examples/image-processing) | Image resize pipeline with progress | [Planned (#7)](https://github.com/avifenesh/glidemq-examples/issues/7) |
-| [webhook-delivery](examples/webhook-delivery) | Reliable webhook delivery with backoff | [Planned (#8)](https://github.com/avifenesh/glidemq-examples/issues/8) |
+| [email-service](examples/email-service) | Email queue with retries and DLQ | Ready |
+| [image-pipeline](examples/image-pipeline) | Image resize pipeline with progress | Ready |
+| [webhook-delivery](examples/webhook-delivery) | Reliable webhook delivery with backoff | Ready |
 | [cron-scheduler](examples/cron-scheduler) | Scheduled tasks with cron expressions | [Planned (#9)](https://github.com/avifenesh/glidemq-examples/issues/9) |
 | [request-reply](examples/request-reply) | Synchronous job execution with addAndWait | [Planned (#10)](https://github.com/avifenesh/glidemq-examples/issues/10) |
 | [opentelemetry](examples/opentelemetry) | Tracing and observability setup | [Planned (#11)](https://github.com/avifenesh/glidemq-examples/issues/11) |
-| [testing](examples/testing) | In-memory TestQueue/TestWorker | [Planned (#12)](https://github.com/avifenesh/glidemq-examples/issues/12) |
+| [testing](examples/testing) | In-memory TestQueue/TestWorker | Ready |
 | [cluster-mode](examples/cluster-mode) | Running with Valkey cluster | [Planned (#13)](https://github.com/avifenesh/glidemq-examples/issues/13) |
 
 ## Quick Start
