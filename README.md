@@ -56,6 +56,7 @@ Full framework integration packages to be built as separate repos.
 
 | Framework | Package | Status | Issue |
 |-----------|---------|--------|-------|
+| Hono | [`@glidemq/hono`](https://github.com/avifenesh/glidemq-hono) | Ready | — |
 | NestJS | [`@glidemq/nestjs`](https://github.com/avifenesh/glidemq-nestjs) | Ready | [#1](https://github.com/avifenesh/glidemq-examples/issues/1) |
 | Fastify | [`@glidemq/fastify`](https://github.com/avifenesh/glidemq-fastify) | Ready | [#2](https://github.com/avifenesh/glidemq-examples/issues/2) |
 
