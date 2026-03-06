@@ -37,7 +37,7 @@ Examples using dedicated `@glidemq/*` packages that provide framework-native int
 | [hono-api](examples/hono-api) | Hono | [`@glidemq/hono`](https://github.com/avifenesh/glidemq-hono) | REST API + SSE + RPC client + registry pattern |
 | [fastify-api](examples/fastify-api) | Fastify | [`@glidemq/fastify`](https://github.com/avifenesh/glidemq-fastify) | REST API + SSE + plugin/decorator pattern |
 | [express-dashboard](examples/express-dashboard) | Express | [`@glidemq/dashboard`](https://github.com/avifenesh/glidemq-dashboard) | Web UI dashboard for monitoring queues |
-| [nestjs-module](examples/nestjs-module) | NestJS | [`@glidemq/nestjs`](https://github.com/avifenesh/glidemq-nestjs) | Decorators, DI, processors, worker events |
+| [nestjs-module](examples/nestjs-module) | NestJS | [`@glidemq/nestjs`](https://github.com/avifenesh/glidemq-nestjs) | Decorators, DI, processors, flows, queue events, feature modules |
 
 ### Framework Usage (direct import)
 
