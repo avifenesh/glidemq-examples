@@ -12,7 +12,7 @@ Comprehensive example of `@glidemq/nestjs` - demonstrates every major feature us
 - `@InjectQueue` for queue injection into services
 - `@InjectFlowProducer` for flow producer injection
 - `@QueueEventsListener` + `QueueEventsHost` for queue-level event monitoring
-- `@OnQueueEvent` for queue events (completed, progress, waiting)
+- `@OnQueueEvent` for queue events (completed, progress, stalled)
 - Feature module pattern (OrderModule with its own queue registration)
 - Job progress tracking with `job.updateProgress()`
 - Job logging with `job.log()`

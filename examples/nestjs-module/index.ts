@@ -89,13 +89,13 @@ class OrderEventsListener extends QueueEventsHost {
   }
 
   @OnQueueEvent('progress')
-  onProgress(args: { jobId: string; data: number }) {
+  onProgress(args: { jobId: string; data: string }) {
     console.log(`[QueueEvents] Order job ${args.jobId} progress: ${args.data}%`);
   }
 
-  @OnQueueEvent('waiting')
-  onWaiting(args: { jobId: string }) {
-    console.log(`[QueueEvents] Order job ${args.jobId} waiting`);
+  @OnQueueEvent('stalled')
+  onStalled(args: { jobId: string }) {
+    console.log(`[QueueEvents] Order job ${args.jobId} stalled`);
   }
 }
 
