@@ -47,7 +47,7 @@ These frameworks need no special package - just `import { Queue, Worker } from '
 |---------|-----------|--------|
 | [hono-basic](examples/hono-basic) | Hono | Ready |
 | [express-basic](examples/express-basic) | Express | [Planned (#3)](https://github.com/avifenesh/glidemq-examples/issues/3) |
-| [koa-basic](examples/koa-basic) | Koa | [Planned (#4)](https://github.com/avifenesh/glidemq-examples/issues/4) |
+| [koa-basic](examples/koa-basic) | Koa | Ready |
 | [nextjs-api-routes](examples/nextjs-api-routes) | Next.js | Ready |
 
 ### Planned Framework Packages
