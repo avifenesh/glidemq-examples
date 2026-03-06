@@ -10,6 +10,7 @@ A collection of examples showing how to use [glide-mq](https://github.com/avifen
 |---------|-------------|
 | [glide-mq](https://github.com/avifenesh/glide-mq) | Core queue library - producers, workers, schedulers, workflows |
 | [@glidemq/hono](https://github.com/avifenesh/glidemq-hono) | Hono middleware - REST API + SSE events for queue management |
+| [@glidemq/fastify](https://github.com/avifenesh/glidemq-fastify) | Fastify plugin - REST API + SSE events for queue management |
 | [@glidemq/dashboard](https://github.com/avifenesh/glidemq-dashboard) | Express middleware - web UI for monitoring and managing queues |
 | [@glidemq/nestjs](https://github.com/avifenesh/glidemq-nestjs) | NestJS module - decorators, DI, lifecycle management |
 | [@glidemq/speedkey](https://github.com/avifenesh/speedkey) | Valkey GLIDE client with native NAPI bindings |
@@ -34,6 +35,7 @@ Examples using dedicated `@glidemq/*` packages that provide framework-native int
 | Example | Framework | Package | What you'll learn |
 |---------|-----------|---------|-------------------|
 | [hono-api](examples/hono-api) | Hono | [`@glidemq/hono`](https://github.com/avifenesh/glidemq-hono) | REST API + SSE + RPC client + registry pattern |
+| [fastify-api](examples/fastify-api) | Fastify | [`@glidemq/fastify`](https://github.com/avifenesh/glidemq-fastify) | REST API + SSE + plugin/decorator pattern |
 | [express-dashboard](examples/express-dashboard) | Express | [`@glidemq/dashboard`](https://github.com/avifenesh/glidemq-dashboard) | Web UI dashboard for monitoring queues |
 | [nestjs-module](examples/nestjs-module) | NestJS | [`@glidemq/nestjs`](https://github.com/avifenesh/glidemq-nestjs) | Decorators, DI, processors, worker events |
 
@@ -55,7 +57,7 @@ Full framework integration packages to be built as separate repos.
 | Framework | Package | Status | Issue |
 |-----------|---------|--------|-------|
 | NestJS | [`@glidemq/nestjs`](https://github.com/avifenesh/glidemq-nestjs) | Ready | [#1](https://github.com/avifenesh/glidemq-examples/issues/1) |
-| Fastify | `@glidemq/fastify` | Planned | [#2](https://github.com/avifenesh/glidemq-examples/issues/2) |
+| Fastify | [`@glidemq/fastify`](https://github.com/avifenesh/glidemq-fastify) | Ready | [#2](https://github.com/avifenesh/glidemq-examples/issues/2) |
 
 ### Use Case Examples
 
