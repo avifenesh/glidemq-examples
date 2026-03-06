@@ -5,7 +5,7 @@ Comprehensive example of `@glidemq/nestjs` - demonstrates every major feature us
 ## What you'll learn
 
 - `GlideMQModule.forRoot()` for global connection config with testing mode
-- `GlideMQModule.registerQueue()` with `defaultJobOptions` (retries, backoff)
+- `GlideMQModule.registerQueue()` for queue registration
 - `GlideMQModule.registerFlowProducer()` for workflow support
 - `@Processor` with options object (concurrency) and `WorkerHost` base class
 - `@OnWorkerEvent` for worker lifecycle events (active, completed, failed)

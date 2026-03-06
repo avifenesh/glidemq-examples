@@ -7,6 +7,7 @@ import {
   Get,
   Body,
   Param,
+  NotFoundException,
 } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -118,7 +119,7 @@ class EmailService {
 
   async getJob(id: string) {
     const job = await this.queue.getJob(id);
-    if (!job) return null;
+    if (!job) throw new NotFoundException(`Job ${id} not found`);
     return { id: job.id, name: job.name, data: job.data, returnvalue: job.returnvalue };
   }
 
@@ -161,7 +162,7 @@ class OrderService {
 
   async getJob(id: string) {
     const job = await this.queue.getJob(id);
-    if (!job) return null;
+    if (!job) throw new NotFoundException(`Job ${id} not found`);
     return { id: job.id, name: job.name, data: job.data, returnvalue: job.returnvalue };
   }
 
@@ -177,13 +178,13 @@ class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
   @Post('send')
-  async send(@Body() body: { to: string; subject: string; body: string }) {
-    return this.emailService.send(body.to, body.subject, body.body);
+  async send(@Body() dto: { to: string; subject: string; body: string }) {
+    return this.emailService.send(dto.to, dto.subject, dto.body);
   }
 
   @Post('send-bulk')
-  async sendBulk(@Body() body: { emails: { to: string; subject: string; body: string }[] }) {
-    return this.emailService.sendBulk(body.emails);
+  async sendBulk(@Body() dto: { emails: { to: string; subject: string; body: string }[] }) {
+    return this.emailService.sendBulk(dto.emails);
   }
 
   @Get('status')
@@ -242,14 +243,7 @@ class OrderModule {}
       connection: { addresses: [{ host: 'localhost', port: 6379 }] },
       testing: process.env.TESTING === 'true',
     }),
-    GlideMQModule.registerQueue({
-      name: 'emails',
-      defaultJobOptions: {
-        attempts: 3,
-        backoff: { type: 'exponential', delay: 1000 },
-        removeOnComplete: 100,
-      },
-    }),
+    GlideMQModule.registerQueue({ name: 'emails' }),
     OrderModule,
   ],
   providers: [EmailProcessor, EmailService],
@@ -261,21 +255,25 @@ class AppModule {}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableShutdownHooks();
   await app.listen(3000);
 
-  console.log('NestJS + glide-mq running at http://localhost:3000');
-  console.log('');
-  console.log('Email endpoints:');
-  console.log('  POST /emails/send       - { to, subject, body }');
-  console.log('  POST /emails/send-bulk  - { emails: [{ to, subject, body }] }');
-  console.log('  GET  /emails/status');
-  console.log('  GET  /emails/:id');
-  console.log('');
-  console.log('Order endpoints:');
-  console.log('  POST /orders            - { orderId, items }');
-  console.log('  POST /orders/flow       - { orderId, items, email }');
-  console.log('  GET  /orders/status');
-  console.log('  GET  /orders/:id');
+  console.log(`NestJS + glide-mq running at http://localhost:3000
+
+Email endpoints:
+  POST /emails/send       - { to, subject, body }
+  POST /emails/send-bulk  - { emails: [{ to, subject, body }] }
+  GET  /emails/status
+  GET  /emails/:id
+
+Order endpoints:
+  POST /orders            - { orderId, items }
+  POST /orders/flow       - { orderId, items, email }
+  GET  /orders/status
+  GET  /orders/:id`);
 }
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('Failed to start:', err);
+  process.exit(1);
+});
