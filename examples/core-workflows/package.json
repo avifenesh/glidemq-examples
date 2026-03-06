@@ -8,11 +8,11 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "glide-mq": "latest",
-    "@glidemq/speedkey": "latest"
+    "@glidemq/speedkey": "latest",
+    "glide-mq": "latest"
   },
   "devDependencies": {
-    "tsx": "^4.21.0",
-    "@types/node": "^22"
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
   }
 }

@@ -8,14 +8,14 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "glide-mq": "latest",
-    "@glidemq/speedkey": "latest",
     "@glidemq/dashboard": "latest",
-    "express": "^5.2.1"
+    "@glidemq/speedkey": "latest",
+    "express": "^5.2.1",
+    "glide-mq": "latest"
   },
   "devDependencies": {
-    "tsx": "^4.21.0",
+    "@types/express": "^5.0.6",
     "@types/node": "^22",
-    "@types/express": "^5.0.6"
+    "tsx": "^4.21.0"
   }
 }

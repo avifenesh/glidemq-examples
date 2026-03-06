@@ -1,0 +1,14 @@
+{
+  "name": "glidemq-examples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Examples and integrations for glide-mq",
+  "scripts": {
+    "typecheck": "node scripts/typecheck.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "tsx": "^4.21.0",
+    "@types/node": "^22"
+  }
+}

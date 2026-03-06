@@ -8,14 +8,14 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "glide-mq": "latest",
-    "@glidemq/speedkey": "latest",
     "@glidemq/hono": "latest",
-    "hono": "^4",
-    "@hono/node-server": "^1"
+    "@glidemq/speedkey": "latest",
+    "@hono/node-server": "^1",
+    "glide-mq": "latest",
+    "hono": "^4"
   },
   "devDependencies": {
-    "tsx": "^4.21.0",
-    "@types/node": "^22"
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
   }
 }

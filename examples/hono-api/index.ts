@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
 import { glideMQ, glideMQApi, QueueRegistryImpl } from '@glidemq/hono';
+import type { GlideMQEnv } from '@glidemq/hono';
 import type { Job } from 'glide-mq';
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
@@ -26,7 +27,7 @@ const registry = new QueueRegistryImpl({
   },
 });
 
-const app = new Hono();
+const app = new Hono<GlideMQEnv>();
 
 // Mount middleware - injects registry into c.var.glideMQ
 app.use(glideMQ(registry));
@@ -39,14 +40,14 @@ app.post('/send-email', async (c) => {
   const { to, subject, body } = await c.req.json();
   const { queue } = c.var.glideMQ.get('emails');
   const job = await queue.add('send', { to, subject, body });
-  return c.json({ jobId: job.id });
+  return c.json({ jobId: job?.id ?? null });
 });
 
 app.post('/place-order', async (c) => {
   const { items, total } = await c.req.json();
   const { queue } = c.var.glideMQ.get('orders');
   const job = await queue.add('process', { orderId: `ORD-${Date.now()}`, items, total });
-  return c.json({ jobId: job.id });
+  return c.json({ jobId: job?.id ?? null });
 });
 
 // Start server

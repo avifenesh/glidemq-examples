@@ -23,7 +23,7 @@ const app = new Hono();
 app.post('/send-email', async (c) => {
   const { to, subject, body } = await c.req.json();
   const job = await emailQueue.add('send', { to, subject, body });
-  return c.json({ jobId: job.id, status: 'queued' });
+  return c.json({ jobId: job?.id ?? null, status: 'queued' });
 });
 
 app.get('/queue-status', async (c) => {

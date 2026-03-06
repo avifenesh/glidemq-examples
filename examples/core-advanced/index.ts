@@ -1,4 +1,4 @@
-import { Queue, Worker, Scheduler } from 'glide-mq';
+import { Queue, Worker } from 'glide-mq';
 import type { Job } from 'glide-mq';
 import { setTimeout } from 'timers/promises';
 
@@ -90,9 +90,9 @@ const dlqWorker = new Worker('dead-letter', async (job: Job) => {
 await flakyQueue.add('will-fail', { reason: 'testing DLQ' }, { attempts: 2 });
 
 // --- 5. Scheduler (cron) ---
+// Schedulers are managed via Queue - no separate Scheduler import needed
 
-const scheduler = new Scheduler('reports', { connection });
-await scheduler.upsertJobScheduler('daily-report', {
+await reportQueue.upsertJobScheduler('daily-report', {
   pattern: '0 9 * * *', // 9 AM daily
 }, {
   name: 'scheduled-report',
@@ -107,7 +107,7 @@ await setTimeout(5000);
 console.log('Shutting down...');
 await Promise.all([
   reportWorker.close(), apiWorker.close(), analyticsWorker.close(),
-  flakyWorker.close(), dlqWorker.close(), scheduler.close(),
+  flakyWorker.close(), dlqWorker.close(),
   reportQueue.close(), apiQueue.close(), analyticsQueue.close(),
   flakyQueue.close(), dlq.close(),
 ]);
