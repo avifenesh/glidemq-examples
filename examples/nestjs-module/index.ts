@@ -22,11 +22,7 @@ import {
 } from '@glidemq/nestjs';
 import type { Queue, FlowProducer, Job } from 'glide-mq';
 
-// =============================================================================
-// Processors
-// =============================================================================
-
-// --- Email Processor: concurrency option + worker events ---
+// --- Processors ---
 
 @Processor({ name: 'emails', concurrency: 3 })
 class EmailProcessor extends WorkerHost {
@@ -51,8 +47,6 @@ class EmailProcessor extends WorkerHost {
     console.error(`[EmailProcessor] Job ${job.id} failed:`, err.message);
   }
 }
-
-// --- Order Processor: progress tracking + job logging ---
 
 @Processor('orders')
 class OrderProcessor extends WorkerHost {
@@ -84,9 +78,7 @@ class OrderProcessor extends WorkerHost {
   }
 }
 
-// =============================================================================
-// Queue Events Listener - monitors the orders queue at the queue level
-// =============================================================================
+// --- Queue Events Listener ---
 
 @QueueEventsListener('orders')
 class OrderEventsListener extends QueueEventsHost {
@@ -106,11 +98,7 @@ class OrderEventsListener extends QueueEventsHost {
   }
 }
 
-// =============================================================================
-// Services
-// =============================================================================
-
-// --- Email Service: queue injection, bulk operations, job lookup ---
+// --- Services ---
 
 @Injectable()
 class EmailService {
@@ -139,8 +127,6 @@ class EmailService {
   }
 }
 
-// --- Order Service: queue injection + flow producer for parent/child workflows ---
-
 @Injectable()
 class OrderService {
   constructor(
@@ -157,8 +143,6 @@ class OrderService {
     return { jobId: job?.id ?? null, status: 'queued' };
   }
 
-  // Parent/child flow: processing the order is the parent,
-  // sending a confirmation email is the child that must complete first.
   async createOrderWithConfirmation(orderId: string, items: string[], email: string) {
     const result = await this.flow.add({
       name: 'process',
@@ -186,9 +170,7 @@ class OrderService {
   }
 }
 
-// =============================================================================
-// Controllers
-// =============================================================================
+// --- Controllers ---
 
 @Controller('emails')
 class EmailController {
@@ -240,9 +222,7 @@ class OrderController {
   }
 }
 
-// =============================================================================
-// Feature Module - orders have their own module with queue + flow producer
-// =============================================================================
+// --- Feature Module: orders have their own module with queue + flow producer ---
 
 @Module({
   imports: [
@@ -254,9 +234,7 @@ class OrderController {
 })
 class OrderModule {}
 
-// =============================================================================
-// App Module - global config + email queue registered at the root level
-// =============================================================================
+// --- App Module ---
 
 @Module({
   imports: [
@@ -279,9 +257,7 @@ class OrderModule {}
 })
 class AppModule {}
 
-// =============================================================================
-// Bootstrap
-// =============================================================================
+// --- Bootstrap ---
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
