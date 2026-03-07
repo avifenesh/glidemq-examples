@@ -1,0 +1,19 @@
+{
+  "name": "repeat-after-complete",
+  "version": "1.0.0",
+  "description": "Schedule jobs to repeat only after the previous run finishes.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "npx tsx index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "glide-mq": "^0.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
