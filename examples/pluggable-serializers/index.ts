@@ -41,19 +41,22 @@ b64Worker.on('error', (err) => console.error('[b64] Worker error:', err));
 
 // --- 3. Compact number-array serializer ---
 // Demonstrates a domain-specific serializer for tight binary-like encoding.
-// Encodes arrays of numbers as a comma-separated string to save space.
+// Uses a 'NUM_ARR:' prefix to unambiguously distinguish the custom format from JSON.
+
+const NUM_ARR_PREFIX = 'NUM_ARR:';
 
 const numberArraySerializer: Serializer = {
   serialize(data: unknown): string {
     if (Array.isArray(data) && data.every((n) => typeof n === 'number')) {
-      return (data as number[]).join(',');
+      return NUM_ARR_PREFIX + (data as number[]).join(',');
     }
     // Fall back to JSON for non-number-array data
     return JSON.stringify(data);
   },
   deserialize(raw: string): unknown {
-    if (/^-?\d/.test(raw) && !raw.startsWith('{') && !raw.startsWith('[')) {
-      return raw.split(',').map(Number);
+    if (raw.startsWith(NUM_ARR_PREFIX)) {
+      const str = raw.slice(NUM_ARR_PREFIX.length);
+      return str === '' ? [] : str.split(',').map(Number);
     }
     return JSON.parse(raw);
   },
@@ -112,4 +115,3 @@ await Promise.all([
   numQueue.close(),
 ]);
 console.log('\nDone.');
-process.exit(0);
