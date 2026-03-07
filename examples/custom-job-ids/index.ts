@@ -26,10 +26,13 @@ const job2 = await queue.add('send-report', { userId: 'u-123', month: '2026-02' 
 console.log('Duplicate add result:', job2); // null
 
 // --- 2. Lookup by known ID ---
+// Poll until the job is processed rather than using a fixed delay.
 
-await setTimeout(200);
-
-const fetched = await queue.getJob('report-u-123-2026-02');
+let fetched = await queue.getJob('report-u-123-2026-02');
+while (!fetched?.returnvalue) {
+  await setTimeout(50);
+  fetched = await queue.getJob('report-u-123-2026-02');
+}
 console.log('\nFetched by ID:', { id: fetched?.id, name: fetched?.name, returnvalue: fetched?.returnvalue });
 
 // --- 3. Batch with custom IDs (e.g. order IDs from your DB) ---
@@ -54,10 +57,14 @@ const deduped = await queue.addBulk(
 );
 console.log('Re-add duplicates:', deduped); // [null, null, null]
 
-await setTimeout(500);
+// Wait for order jobs to be processed before shutting down.
+let counts = await queue.getJobCounts();
+while ((counts.active ?? 0) > 0 || (counts.waiting ?? 0) > 0) {
+  await setTimeout(50);
+  counts = await queue.getJobCounts();
+}
 
 // --- Shutdown ---
 await worker.close();
 await queue.close();
 console.log('\nDone.');
-process.exit(0);
