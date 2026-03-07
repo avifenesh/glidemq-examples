@@ -72,4 +72,3 @@ console.log('\nFinal job counts:', counts);
 await worker.close();
 await queue.close();
 console.log('Done.');
-process.exit(0);
