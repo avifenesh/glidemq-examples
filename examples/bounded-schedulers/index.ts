@@ -8,7 +8,7 @@ const queue = new Queue('scheduled', { connection });
 const worker = new Worker('scheduled', async (job: Job) => {
   console.log(`[${new Date().toISOString()}] Running: ${job.name} (scheduler: ${job.data.scheduler})`);
   return { ran: true };
-}, { connection, concurrency: 2 });
+}, { connection, concurrency: 2, promotionInterval: 200 });
 
 worker.on('error', (err) => console.error('Worker error:', err));
 

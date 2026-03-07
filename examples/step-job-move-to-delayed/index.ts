@@ -41,7 +41,7 @@ const campaignWorker = new Worker<CampaignData>('campaign', async (job: Job<Camp
     default:
       throw new Error(`Unknown step: ${step}`);
   }
-}, { connection, concurrency: 3 });
+}, { connection, concurrency: 3, promotionInterval: 200 });
 
 campaignWorker.on('completed', (job, result) => {
   console.log(`[campaign] DONE for ${result.userId} at ${result.completedAt}`);
@@ -83,7 +83,7 @@ const orderWorker = new Worker<OrderData>('orders', async (job: Job<OrderData>) 
     default:
       throw new Error(`Unknown step: ${step}`);
   }
-}, { connection, concurrency: 2 });
+}, { connection, concurrency: 2, promotionInterval: 200 });
 
 orderWorker.on('completed', (job, result) => {
   console.log(`[orders] Shipped: ${result.orderId}`);

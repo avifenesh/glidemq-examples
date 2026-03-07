@@ -4,80 +4,76 @@ import { setTimeout } from 'timers/promises';
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
 
-// moveToWaitingChildren() pauses a parent job until all its children complete.
-// The parent throws WaitingChildrenError internally - the worker re-queues it
-// automatically once every child is done.
+// FlowProducer creates parent-child job hierarchies. The parent automatically
+// enters "waiting-children" state and is only activated after ALL children complete.
+// Inside the parent processor, call job.getChildrenValues() to access results.
+//
+// For dynamic child addition during processing, call job.moveToWaitingChildren()
+// to suspend the parent until newly-added children finish.
 
 // --- Workers ---
 
 // Child: fetch data from one source
 const fetchWorker = new Worker('fetch', async (job: Job) => {
   console.log(`[fetch] ${job.data.source}: fetching...`);
-  await setTimeout(100 + Math.floor(Math.random() * 100));
-  return { source: job.data.source, rows: Math.floor(Math.random() * 500) + 100 };
+  await setTimeout(200 + Math.floor(Math.random() * 300));
+  const rows = Math.floor(Math.random() * 500) + 100;
+  console.log(`[fetch] ${job.data.source}: got ${rows} rows`);
+  return { source: job.data.source, rows };
 }, { connection, concurrency: 5 });
 
 fetchWorker.on('error', (err) => console.error('[fetch] Worker error:', err));
 
 // Parent: aggregate results once ALL children have finished
 const aggregateWorker = new Worker('aggregate', async (job: Job) => {
-  // On the first invocation, children haven't been added yet.
-  // moveToWaitingChildren() suspends the parent until its children complete,
-  // then the parent is re-activated and processes children's return values.
-  if (!job.data.resumed) {
-    console.log(`[aggregate] ${job.id}: suspending - waiting for children`);
-    await job.moveToWaitingChildren();
-    // ^^ throws WaitingChildrenError - execution stops here on first run
-  }
-
-  // On re-activation, children results are available via getChildrenValues()
+  // By the time this runs, all children have completed.
+  // getChildrenValues() returns a map of { childQueueKey:childId -> returnvalue }
   const childResults = await job.getChildrenValues() as Record<string, { source: string; rows: number }>;
-  const total = Object.values(childResults).reduce((sum, r) => sum + r.rows, 0);
 
-  console.log(`[aggregate] ${job.id}: all children done. total rows=${total}`);
-  return { total, sources: Object.values(childResults).map((r) => r.source) };
+  const entries = Object.values(childResults);
+  const total = entries.reduce((sum, r) => sum + r.rows, 0);
+
+  console.log(`[aggregate] ${job.id}: ${entries.length} children done, total rows=${total}`);
+  return { total, sources: entries.map((r) => r.source) };
 }, { connection, concurrency: 2 });
 
 aggregateWorker.on('completed', (job, result) => {
-  console.log(`\n[aggregate] COMPLETED ${job.id}:`, result);
+  console.log(`[aggregate] COMPLETED ${job.id}:`, result);
 });
 aggregateWorker.on('error', (err) => console.error('[aggregate] Worker error:', err));
 
 // --- Flow Producer ---
-// A flow is a parent job with children. Children are added to their own queues;
-// the parent automatically waits until all of them complete.
-
 const flow = new FlowProducer({ connection });
 
-// Add a parent 'aggregate' job with three 'fetch' children
-const { job: parentJob } = await flow.add({
+// --- Example 1: Single parent with 3 fetch children ---
+console.log('--- Flow 1: merge 3 data sources ---');
+const { job: parentJob1 } = await flow.add({
   name: 'merge-sources',
   queueName: 'aggregate',
-  data: { resumed: false },
+  data: { label: 'multi-source merge' },
   children: [
-    {
-      name: 'fetch-db',
-      queueName: 'fetch',
-      data: { source: 'database' },
-    },
-    {
-      name: 'fetch-api',
-      queueName: 'fetch',
-      data: { source: 'external-api' },
-    },
-    {
-      name: 'fetch-cache',
-      queueName: 'fetch',
-      data: { source: 'redis-cache' },
-    },
+    { name: 'fetch-db', queueName: 'fetch', data: { source: 'database' } },
+    { name: 'fetch-api', queueName: 'fetch', data: { source: 'external-api' } },
+    { name: 'fetch-cache', queueName: 'fetch', data: { source: 'redis-cache' } },
   ],
 });
+console.log(`Parent ${parentJob1.id} created with 3 children\n`);
 
-console.log(`Flow created. Parent job: ${parentJob.id}`);
-console.log('Children will be processed first, then parent aggregates results.\n');
+// --- Example 2: Another flow with different children ---
+console.log('--- Flow 2: merge 2 data sources ---');
+const { job: parentJob2 } = await flow.add({
+  name: 'merge-files',
+  queueName: 'aggregate',
+  data: { label: 'file merge' },
+  children: [
+    { name: 'fetch-s3', queueName: 'fetch', data: { source: 's3-bucket' } },
+    { name: 'fetch-gcs', queueName: 'fetch', data: { source: 'gcs-archive' } },
+  ],
+});
+console.log(`Parent ${parentJob2.id} created with 2 children\n`);
 
-// Wait long enough for all jobs to complete
-await setTimeout(2000);
+// Wait for all flows to complete
+await setTimeout(3000);
 
 // --- Shutdown ---
 await Promise.all([

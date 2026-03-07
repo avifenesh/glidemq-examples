@@ -22,7 +22,7 @@ const scrapeWorker = new Worker('scraper', async (job: Job) => {
   await setTimeout(duration);
   console.log(`[scraper] Run #${run} finished`);
   return { run, duration };
-}, { connection, concurrency: 1 });
+}, { connection, concurrency: 1, promotionInterval: 200 });
 
 scrapeWorker.on('error', (err) => console.error('[scraper] Error:', err));
 
@@ -48,7 +48,7 @@ const reportWorker = new Worker('reports', async (job: Job) => {
   console.log(`[reports] Generating report #${reportRuns} for ${job.data.period}`);
   await setTimeout(200);
   return { reportId: `RPT-${reportRuns}` };
-}, { connection, concurrency: 1 });
+}, { connection, concurrency: 1, promotionInterval: 200 });
 
 reportWorker.on('error', (err) => console.error('[reports] Error:', err));
 

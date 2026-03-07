@@ -36,8 +36,8 @@ await setTimeout(800);
 const lightweight = await queue.getJobs('completed', 0, 99, { excludeData: true });
 console.log(`\nCompleted jobs (excludeData: true) - ${lightweight.length} jobs:`);
 lightweight.forEach((j) => {
-  // data is empty ({}) and returnvalue is undefined when excludeData is true
-  console.log(`  ${j.id} | ${j.name} | data keys: ${Object.keys(j.data).length} | returnvalue: ${j.returnvalue}`);
+  // data and returnvalue are omitted when excludeData is true
+  console.log(`  ${j.id} | ${j.name} | data: ${j.data ?? '(excluded)'} | returnvalue: ${j.returnvalue ?? '(excluded)'}`);
 });
 
 // --- 2. Get full details for a single job by ID ---
