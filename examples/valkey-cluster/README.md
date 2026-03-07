@@ -10,11 +10,9 @@ npm install
 
 Requires a Valkey/Redis cluster on `localhost:7000-7005`.
 
-To start a local cluster:
-```bash
-docker run -d --name valkey-cluster -p 7000-7005:7000-7005 \
-  valkey/valkey:8.0 --cluster-enabled yes
-```
+To start a local 6-node cluster (3 masters + 3 replicas), use the Valkey
+`create-cluster` script or a multi-container setup. See the
+[Valkey cluster tutorial](https://valkey.io/topics/cluster-tutorial/) for details.
 
 ## Run
 
