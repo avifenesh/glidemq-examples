@@ -11,6 +11,7 @@ import { Resource } from '@opentelemetry/resources';
 
 const provider = new NodeTracerProvider({
   resource: new Resource({ 'service.name': 'glidemq-otel-example' }),
+  // Use BatchSpanProcessor in production - SimpleSpanProcessor is for demo only
   spanProcessors: [new SimpleSpanProcessor(new ConsoleSpanExporter())],
 });
 

@@ -8,8 +8,9 @@ const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
 // enters "waiting-children" state and is only activated after ALL children complete.
 // Inside the parent processor, call job.getChildrenValues() to access results.
 //
+// This example shows the static FlowProducer pattern (children declared at creation time).
 // For dynamic child addition during processing, call job.moveToWaitingChildren()
-// to suspend the parent until newly-added children finish.
+// to re-suspend the parent until newly-added children finish.
 
 // --- Workers ---
 

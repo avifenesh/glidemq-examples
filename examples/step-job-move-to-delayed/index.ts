@@ -27,14 +27,13 @@ const campaignWorker = new Worker<CampaignData>('campaign', async (job: Job<Camp
   switch (step) {
     case 'welcome':
       console.log(`[campaign] ${userId}: send welcome email to ${email}`);
-      // Schedule the follow-up in 2 seconds (would be 2 days in production)
+      // moveToDelayed throws DelayedError - updates job.data.step and reschedules
       await job.moveToDelayed(Date.now() + 2000, 'follow-up');
-      // ^^ throws DelayedError - execution stops here
-      return;
+      break; // unreachable - moveToDelayed always throws
     case 'follow-up':
       console.log(`[campaign] ${userId}: send follow-up email to ${email}`);
       await job.moveToDelayed(Date.now() + 2000, 'final');
-      return;
+      break; // unreachable
     case 'final':
       console.log(`[campaign] ${userId}: send final offer email to ${email}`);
       return { userId, completedAt: new Date().toISOString() };
@@ -44,7 +43,8 @@ const campaignWorker = new Worker<CampaignData>('campaign', async (job: Job<Camp
 }, { connection, concurrency: 3, promotionInterval: 200 });
 
 campaignWorker.on('completed', (job, result) => {
-  console.log(`[campaign] DONE for ${result.userId} at ${result.completedAt}`);
+  // Only the final step returns a result; intermediate steps throw DelayedError
+  if (result) console.log(`[campaign] DONE for ${result.userId} at ${result.completedAt}`);
 });
 campaignWorker.on('error', (err) => console.error('[campaign] Worker error:', err));
 
@@ -68,14 +68,13 @@ const orderWorker = new Worker<OrderData>('orders', async (job: Job<OrderData>) 
     case 'payment':
       console.log(`[orders] ${orderId}: processing payment $${amount}`);
       await setTimeout(50); // simulate payment gateway
-      // Move to fulfillment after a short delay
       await job.moveToDelayed(Date.now() + 1000, 'fulfillment');
-      return;
+      break; // unreachable
     case 'fulfillment':
       console.log(`[orders] ${orderId}: fulfilling order`);
       await setTimeout(50);
       await job.moveToDelayed(Date.now() + 1000, 'shipping');
-      return;
+      break; // unreachable
     case 'shipping':
       console.log(`[orders] ${orderId}: dispatching shipment`);
       await setTimeout(30);
@@ -86,7 +85,7 @@ const orderWorker = new Worker<OrderData>('orders', async (job: Job<OrderData>) 
 }, { connection, concurrency: 2, promotionInterval: 200 });
 
 orderWorker.on('completed', (job, result) => {
-  console.log(`[orders] Shipped: ${result.orderId}`);
+  if (result) console.log(`[orders] Shipped: ${result.orderId}`);
 });
 orderWorker.on('error', (err) => console.error('[orders] Worker error:', err));
 

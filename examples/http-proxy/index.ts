@@ -1,12 +1,14 @@
 import { createProxyServer } from 'glide-mq/proxy';
 import { Worker } from 'glide-mq';
 import type { Job } from 'glide-mq';
+import { setTimeout } from 'timers/promises';
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
 
 // --- 1. Start the HTTP proxy ---
 // createProxyServer returns an Express app that maps HTTP requests to queue ops.
 // Any language that can make HTTP calls can enqueue and query jobs.
+// NOTE: Add authentication middleware (API key, JWT) before production use.
 
 const proxy = createProxyServer({
   connection,
@@ -78,7 +80,7 @@ const bulkResult = await httpPost('/queues/orders/jobs/bulk', {
 console.log('POST /queues/orders/jobs/bulk:', bulkResult);
 
 // Wait for processing
-await new Promise<void>((resolve) => setTimeout(resolve, 500));
+await setTimeout(500);
 
 // Query job counts
 const emailCounts = await httpGet('/queues/emails/counts');

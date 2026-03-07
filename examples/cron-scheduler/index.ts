@@ -63,12 +63,12 @@ console.log('Scheduler: delayed-start (every 800ms, starts in 2s)');
 // --- Verify schedulers exist ---
 const schedulerNames = ['heartbeat', 'hourly-cleanup', 'daily-report-us', 'delayed-start'];
 console.log('\nActive schedulers:');
-for (const name of schedulerNames) {
-  const entry = await queue.getJobScheduler(name);
-  if (entry) {
-    console.log(`  ${name} | next: ${new Date(entry.nextRun).toISOString()}`);
+const entries = await Promise.all(schedulerNames.map((name) => queue.getJobScheduler(name)));
+schedulerNames.forEach((name, i) => {
+  if (entries[i]) {
+    console.log(`  ${name} | next: ${new Date(entries[i]!.nextRun).toISOString()}`);
   }
-}
+});
 
 // --- Observe runs ---
 console.log('\nWaiting 4s to observe scheduled runs...\n');
@@ -78,9 +78,7 @@ const counts = await queue.getJobCounts();
 console.log('\nJob counts:', counts);
 
 // --- Remove schedulers ---
-for (const name of schedulerNames) {
-  await queue.removeJobScheduler(name);
-}
+await Promise.all(schedulerNames.map((name) => queue.removeJobScheduler(name)));
 console.log('All schedulers removed.');
 
 // --- Shutdown ---
