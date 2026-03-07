@@ -1,0 +1,19 @@
+{
+  "name": "exclude-data",
+  "version": "1.0.0",
+  "description": "List jobs without payloads using excludeData for lightweight status dashboards.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "npx tsx index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "glide-mq": "^0.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
