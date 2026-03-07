@@ -1,0 +1,19 @@
+{
+  "name": "batch-processing",
+  "version": "1.0.0",
+  "description": "Batch job processing with glide-mq - consume N jobs at once for bulk operations.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "npx tsx index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "glide-mq": "^0.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
