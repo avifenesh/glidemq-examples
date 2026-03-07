@@ -14,14 +14,17 @@ const proxy = createProxyServer({
 });
 
 const PORT = 3456;
-const server = proxy.app.listen(PORT, () => {
-  console.log(`HTTP proxy listening on http://localhost:${PORT}`);
-  console.log('Endpoints:');
-  console.log('  POST   /queues/:name/jobs       - add a job');
-  console.log('  POST   /queues/:name/jobs/bulk   - add jobs in bulk');
-  console.log('  GET    /queues/:name/jobs/:id    - get job by ID');
-  console.log('  GET    /queues/:name/counts      - get job counts');
-  console.log('  GET    /health                   - health check\n');
+const server = await new Promise<ReturnType<typeof proxy.app.listen>>((resolve) => {
+  const s = proxy.app.listen(PORT, () => {
+    console.log(`HTTP proxy listening on http://localhost:${PORT}`);
+    console.log('Endpoints:');
+    console.log('  POST   /queues/:name/jobs       - add a job');
+    console.log('  POST   /queues/:name/jobs/bulk   - add jobs in bulk');
+    console.log('  GET    /queues/:name/jobs/:id    - get job by ID');
+    console.log('  GET    /queues/:name/counts      - get job counts');
+    console.log('  GET    /health                   - health check\n');
+    resolve(s);
+  });
 });
 
 // --- 2. Workers process jobs as usual ---
@@ -56,9 +59,6 @@ async function httpGet(path: string): Promise<unknown> {
   const res = await fetch(`http://localhost:${PORT}${path}`);
   return res.json();
 }
-
-// Wait for server to be ready
-await new Promise<void>((resolve) => setTimeout(resolve, 200));
 
 // Add a single job
 const emailResult = await httpPost('/queues/emails/jobs', {
@@ -100,7 +100,7 @@ const forbidden = await fetch(`http://localhost:${PORT}/queues/secret/jobs`, {
 console.log(`\nPOST /queues/secret/jobs: ${forbidden.status}`, await forbidden.json());
 
 // --- Shutdown ---
-server.close();
+await new Promise<void>((resolve) => server.close(() => resolve()));
 await emailWorker.close();
 await orderWorker.close();
 await proxy.close();
