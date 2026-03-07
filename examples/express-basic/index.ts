@@ -1,6 +1,10 @@
+import crypto from 'crypto';
 import express from 'express';
 import { Queue, Worker } from 'glide-mq';
 import type { Job } from 'glide-mq';
+
+const VALID_JOB_TYPES = ['waiting', 'active', 'delayed', 'completed', 'failed'] as const;
+type JobType = typeof VALID_JOB_TYPES[number];
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
 
@@ -25,8 +29,8 @@ const orderWorker = new Worker('orders', processOrder, { connection, concurrency
 
 emailWorker.on('completed', (job) => console.log(`Email job ${job.id} done`));
 orderWorker.on('completed', (job) => console.log(`Order job ${job.id} done`));
-emailWorker.on('error', () => {});
-orderWorker.on('error', () => {});
+emailWorker.on('error', (err) => console.error('Email worker error:', err));
+orderWorker.on('error', (err) => console.error('Order worker error:', err));
 
 // Queue registry helper
 function getQueue(name: string): Queue | null {
@@ -39,6 +43,8 @@ function getQueue(name: string): Queue | null {
 const app = express();
 app.use(express.json());
 
+// Note: auth is omitted intentionally - this is a local dev example.
+// Add middleware (e.g. express-jwt) to protect these routes in production.
 const router = express.Router();
 
 // Add a job
@@ -56,13 +62,20 @@ router.post('/:name/jobs', async (req, res) => {
   res.status(201).json({ id: job?.id, name: job?.name, data: job?.data });
 });
 
-// List jobs
+// List jobs (max 100 per page)
 router.get('/:name/jobs', async (req, res) => {
   const queue = getQueue(req.params.name);
   if (!queue) { res.status(404).json({ error: 'Queue not found' }); return; }
 
   const type = (req.query.type as string) ?? 'waiting';
-  const jobs = await queue.getJobs(type as any);
+  if (!VALID_JOB_TYPES.includes(type as JobType)) {
+    res.status(400).json({ error: 'Validation failed', details: [`type must be one of: ${VALID_JOB_TYPES.join(', ')}`] });
+    return;
+  }
+
+  const start = Number(req.query.start ?? 0);
+  const end = Math.min(Number(req.query.end ?? 99), 99); // cap at 100 jobs
+  const jobs = await queue.getJobs(type as JobType, start, end);
   res.json(jobs.map((j) => ({ id: j.id, name: j.name, data: j.data })));
 });
 
@@ -114,7 +127,7 @@ app.post('/send-email', async (req, res) => {
 
 app.post('/place-order', async (req, res) => {
   const { items, total } = req.body;
-  const job = await orderQueue.add('process', { orderId: `ORD-${Date.now()}`, items, total });
+  const job = await orderQueue.add('process', { orderId: `ORD-${crypto.randomUUID()}`, items, total });
   res.json({ jobId: job?.id ?? null });
 });
 
