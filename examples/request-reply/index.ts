@@ -12,13 +12,14 @@ const worker = new Worker('rpc', async (job: Job) => {
   console.log(`[worker] Processing ${job.name}: ${JSON.stringify(job.data)}`);
   await setTimeout(50); // simulate work
 
-  if (job.name === 'add') {
-    return { result: job.data.a + job.data.b };
+  switch (job.name) {
+    case 'add':
+      return { result: job.data.a + job.data.b };
+    case 'greet':
+      return { message: `Hello, ${job.data.name}!` };
+    default:
+      throw new Error(`Unknown operation: ${job.name}`);
   }
-  if (job.name === 'greet') {
-    return { message: `Hello, ${job.data.name}!` };
-  }
-  throw new Error(`Unknown operation: ${job.name}`);
 }, { connection, concurrency: 5 });
 
 worker.on('error', (err) => console.error('[worker] Error:', err));
@@ -51,4 +52,3 @@ results.forEach((r, i) => console.log(`  [${i}]`, r));
 await worker.close();
 await rpcQueue.close();
 console.log('\nDone.');
-process.exit(0);
