@@ -1,0 +1,19 @@
+{
+  "name": "cron-scheduler",
+  "version": "1.0.0",
+  "description": "Recurring jobs with cron patterns and fixed intervals in glide-mq.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "npx tsx index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "glide-mq": "^0.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
