@@ -11,9 +11,11 @@ const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
 // --- 1. Multi-step email campaign ---
 // Each email in a drip campaign sends, then schedules the next send.
 
+type CampaignStep = 'welcome' | 'follow-up' | 'final';
+
 type CampaignData = {
   userId: string;
-  step: string;
+  step: CampaignStep;
   email: string;
 };
 
@@ -22,24 +24,23 @@ const campaignQueue = new Queue<CampaignData>('campaign', { connection });
 const campaignWorker = new Worker<CampaignData>('campaign', async (job: Job<CampaignData>) => {
   const { userId, step, email } = job.data;
 
-  if (step === 'welcome') {
-    console.log(`[campaign] ${userId}: send welcome email to ${email}`);
-    // Schedule the follow-up in 2 seconds (would be 2 days in production)
-    await job.moveToDelayed(Date.now() + 2000, 'follow-up');
-    // ^^ throws DelayedError - execution stops here
+  switch (step) {
+    case 'welcome':
+      console.log(`[campaign] ${userId}: send welcome email to ${email}`);
+      // Schedule the follow-up in 2 seconds (would be 2 days in production)
+      await job.moveToDelayed(Date.now() + 2000, 'follow-up');
+      // ^^ throws DelayedError - execution stops here
+      return;
+    case 'follow-up':
+      console.log(`[campaign] ${userId}: send follow-up email to ${email}`);
+      await job.moveToDelayed(Date.now() + 2000, 'final');
+      return;
+    case 'final':
+      console.log(`[campaign] ${userId}: send final offer email to ${email}`);
+      return { userId, completedAt: new Date().toISOString() };
+    default:
+      throw new Error(`Unknown step: ${step}`);
   }
-
-  if (step === 'follow-up') {
-    console.log(`[campaign] ${userId}: send follow-up email to ${email}`);
-    await job.moveToDelayed(Date.now() + 2000, 'final');
-  }
-
-  if (step === 'final') {
-    console.log(`[campaign] ${userId}: send final offer email to ${email}`);
-    return { userId, completedAt: new Date().toISOString() };
-  }
-
-  throw new Error(`Unknown step: ${step}`);
 }, { connection, concurrency: 3 });
 
 campaignWorker.on('completed', (job, result) => {
@@ -50,9 +51,11 @@ campaignWorker.on('error', (err) => console.error('[campaign] Worker error:', er
 // --- 2. Order processing state machine ---
 // Order progresses through payment -> fulfillment -> shipping with delays between.
 
+type OrderStep = 'payment' | 'fulfillment' | 'shipping';
+
 type OrderData = {
   orderId: string;
-  step: string;
+  step: OrderStep;
   amount: number;
 };
 
@@ -61,26 +64,25 @@ const orderQueue = new Queue<OrderData>('orders', { connection });
 const orderWorker = new Worker<OrderData>('orders', async (job: Job<OrderData>) => {
   const { orderId, step, amount } = job.data;
 
-  if (step === 'payment') {
-    console.log(`[orders] ${orderId}: processing payment $${amount}`);
-    await setTimeout(50); // simulate payment gateway
-    // Move to fulfillment after a short delay
-    await job.moveToDelayed(Date.now() + 1000, 'fulfillment');
+  switch (step) {
+    case 'payment':
+      console.log(`[orders] ${orderId}: processing payment $${amount}`);
+      await setTimeout(50); // simulate payment gateway
+      // Move to fulfillment after a short delay
+      await job.moveToDelayed(Date.now() + 1000, 'fulfillment');
+      return;
+    case 'fulfillment':
+      console.log(`[orders] ${orderId}: fulfilling order`);
+      await setTimeout(50);
+      await job.moveToDelayed(Date.now() + 1000, 'shipping');
+      return;
+    case 'shipping':
+      console.log(`[orders] ${orderId}: dispatching shipment`);
+      await setTimeout(30);
+      return { orderId, status: 'shipped', timestamp: Date.now() };
+    default:
+      throw new Error(`Unknown step: ${step}`);
   }
-
-  if (step === 'fulfillment') {
-    console.log(`[orders] ${orderId}: fulfilling order`);
-    await setTimeout(50);
-    await job.moveToDelayed(Date.now() + 1000, 'shipping');
-  }
-
-  if (step === 'shipping') {
-    console.log(`[orders] ${orderId}: dispatching shipment`);
-    await setTimeout(30);
-    return { orderId, status: 'shipped', timestamp: Date.now() };
-  }
-
-  throw new Error(`Unknown step: ${step}`);
 }, { connection, concurrency: 2 });
 
 orderWorker.on('completed', (job, result) => {
@@ -109,4 +111,3 @@ await Promise.all([
   orderQueue.close(),
 ]);
 console.log('\nDone.');
-process.exit(0);
