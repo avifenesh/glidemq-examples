@@ -78,4 +78,3 @@ console.log(`Report runs completed: ${reportRuns} |`, reportCounts);
 // --- Shutdown ---
 await Promise.all([scrapeWorker.close(), reportWorker.close(), scrapeQueue.close(), reportQueue.close()]);
 console.log('\nDone.');
-process.exit(0);
