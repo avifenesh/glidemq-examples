@@ -15,6 +15,8 @@ import { setTimeout } from 'timers/promises';
 //   2. AWS credentials configured (env vars, profile, or instance role)
 //   3. An IAM user created in ElastiCache/MemoryDB with appropriate permissions
 
+const REGION = process.env.AWS_REGION ?? 'us-east-1';
+
 // --- 1. ElastiCache Serverless with IAM ---
 
 const elasticacheConnection: ConnectionOptions = {
@@ -23,7 +25,7 @@ const elasticacheConnection: ConnectionOptions = {
   credentials: {
     type: 'iam',
     serviceType: 'elasticache',
-    region: 'us-east-1',
+    region: REGION,
     userId: 'my-iam-user',               // IAM user created in ElastiCache
     clusterName: 'my-cache',             // ElastiCache cluster name
     refreshIntervalSeconds: 300,          // Token refresh interval (default: 300s)
@@ -38,10 +40,10 @@ const memorydbConnection: ConnectionOptions = {
   credentials: {
     type: 'iam',
     serviceType: 'memorydb',
-    region: 'us-east-1',
+    region: REGION,
     userId: 'my-iam-user',
     clusterName: 'my-memorydb',
-  },
+  } satisfies IamCredentials,
 };
 
 // --- 3. ElastiCache cluster mode with IAM + read replicas ---
@@ -55,10 +57,10 @@ const clusterConnection: ConnectionOptions = {
   credentials: {
     type: 'iam',
     serviceType: 'elasticache',
-    region: 'us-east-1',
+    region: REGION,
     userId: 'my-iam-user',
     clusterName: 'my-cluster',
-  },
+  } satisfies IamCredentials,
   readFrom: 'preferReplica', // Route reads to replicas for lower latency
 };
 
@@ -77,7 +79,9 @@ const queue = new Queue('iam-demo', { connection });
 const worker = new Worker('iam-demo', async (job: Job) => {
   console.log(`[worker] Processing ${job.name}: ${JSON.stringify(job.data)}`);
   await setTimeout(50);
-  return { processed: true, region: (connection.credentials as IamCredentials).region };
+  const creds = connection.credentials;
+  const region = creds && 'type' in creds && creds.type === 'iam' ? creds.region : 'unknown';
+  return { processed: true, region };
 }, { connection, concurrency: 2 });
 
 worker.on('completed', (job, result) => {
