@@ -19,15 +19,6 @@ const fetchWorker = new Worker('fetch', async (job: Job) => {
 
 fetchWorker.on('error', (err) => console.error('[fetch] Worker error:', err));
 
-// Child: validate the fetched rows
-const validateWorker = new Worker('validate', async (job: Job) => {
-  console.log(`[validate] ${job.data.source}: validating ${job.data.rows} rows...`);
-  await setTimeout(80);
-  return { source: job.data.source, valid: true, rows: job.data.rows };
-}, { connection, concurrency: 5 });
-
-validateWorker.on('error', (err) => console.error('[validate] Worker error:', err));
-
 // Parent: aggregate results once ALL children have finished
 const aggregateWorker = new Worker('aggregate', async (job: Job) => {
   // On the first invocation, children haven't been added yet.
@@ -39,13 +30,12 @@ const aggregateWorker = new Worker('aggregate', async (job: Job) => {
     // ^^ throws WaitingChildrenError - execution stops here on first run
   }
 
-  // On re-activation, children results are available via job.childrenValues
-  const childResults = await job.getChildrenValues() as Record<string, { source: string; valid: boolean; rows: number }>;
+  // On re-activation, children results are available via getChildrenValues()
+  const childResults = await job.getChildrenValues() as Record<string, { source: string; rows: number }>;
   const total = Object.values(childResults).reduce((sum, r) => sum + r.rows, 0);
-  const allValid = Object.values(childResults).every((r) => r.valid);
 
-  console.log(`[aggregate] ${job.id}: all children done. total rows=${total} allValid=${allValid}`);
-  return { total, allValid, sources: Object.values(childResults).map((r) => r.source) };
+  console.log(`[aggregate] ${job.id}: all children done. total rows=${total}`);
+  return { total, sources: Object.values(childResults).map((r) => r.source) };
 }, { connection, concurrency: 2 });
 
 aggregateWorker.on('completed', (job, result) => {
@@ -92,9 +82,7 @@ await setTimeout(2000);
 // --- Shutdown ---
 await Promise.all([
   fetchWorker.close(),
-  validateWorker.close(),
   aggregateWorker.close(),
   flow.close(),
 ]);
 console.log('\nDone.');
-process.exit(0);
