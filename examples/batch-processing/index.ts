@@ -40,16 +40,14 @@ const notificationsQueue = new Queue('notifications', { connection });
 const notificationsBatch: BatchProcessor = async (jobs: Job[]) => {
   console.log(`[notifications] Sending batch of ${jobs.length} notifications`);
 
-  return jobs.map((j) => {
-    console.log(`  → ${j.data.to}: ${j.data.message}`);
-    return { sent: true, to: j.data.to };
-  });
+  jobs.forEach((j) => console.log(`  → ${j.data.to}: ${j.data.message}`));
+  return jobs.map((j) => ({ sent: true, to: j.data.to }));
 };
 
 const notificationsWorker = new Worker('notifications', notificationsBatch, {
   connection,
   concurrency: 2,
-  batch: { size: 5 },
+  batch: { size: 5, timeout: 100 },
 });
 
 notificationsWorker.on('completed', (job) => console.log(`[notifications] Job ${job.id} sent`));
@@ -89,4 +87,3 @@ await Promise.all([
   analyticsQueue.close(),
   notificationsQueue.close(),
 ]);
-process.exit(0);
