@@ -41,17 +41,20 @@ lightweight.forEach((j) => {
 });
 
 // --- 2. Get full details for a single job by ID ---
-const fullJob = await queue.getJob(lightweight[0]?.id ?? '');
-console.log(`\nFull job ${fullJob?.id}:`);
-console.log('  data.filename:', fullJob?.data?.filename);
-console.log('  returnvalue:', fullJob?.returnvalue);
+if (lightweight.length > 0) {
+  const jobId = lightweight[0].id;
 
-// --- 3. getJob with excludeData ---
-const lightJob = await queue.getJob(lightweight[0]?.id ?? '', { excludeData: true });
-console.log(`\nSame job with excludeData: data keys=${Object.keys(lightJob?.data ?? {}).length}`);
+  const fullJob = await queue.getJob(jobId);
+  console.log(`\nFull job ${fullJob?.id}:`);
+  console.log('  data.filename:', fullJob?.data?.filename);
+  console.log('  returnvalue:', fullJob?.returnvalue);
+
+  // --- 3. getJob with excludeData ---
+  const lightJob = await queue.getJob(jobId, { excludeData: true });
+  console.log(`\nSame job with excludeData: data keys=${Object.keys(lightJob?.data ?? {}).length}`);
+}
 
 // --- Shutdown ---
 await worker.close();
 await queue.close();
 console.log('\nDone.');
-process.exit(0);
