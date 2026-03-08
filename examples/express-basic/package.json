@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "^4.21.0",
-    "glide-mq": "^0.8.1"
+    "glide-mq": "latest"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

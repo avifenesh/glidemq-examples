@@ -1,0 +1,19 @@
+{
+  "name": "glidemq-example-fastify-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fastify REST API + SSE events for glide-mq queue management",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "@glidemq/fastify": "latest",
+    "fastify": "^5",
+    "glide-mq": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}
