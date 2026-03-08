@@ -13,6 +13,7 @@ cd examples/core-basics && npm install && npm start
 ## Prerequisites
 
 - **Node.js** 20+
+- **glide-mq** 0.9+ (all examples target this version)
 - **Valkey** 7.0+ (except [testing](examples/testing), which runs in-memory)
 
 ## Examples
