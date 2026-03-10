@@ -1,0 +1,19 @@
+{
+  "name": "@glidemq/example-high-throughput",
+  "version": "1.0.0",
+  "description": "High-throughput worker tuning with events/metrics opt-out (v0.10+).",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "npx tsx index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "glide-mq": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
