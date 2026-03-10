@@ -28,22 +28,22 @@ worker.on('error', (err) => console.error('[worker] Error:', err));
 // This is synchronous from the caller's perspective - no polling needed.
 
 console.log('Sending RPC: add(3, 4)');
-const addResult = await rpcQueue.addAndWait('add', { a: 3, b: 4 }, { timeout: 5000 });
+const addResult = await rpcQueue.addAndWait('add', { a: 3, b: 4 }, { waitTimeout: 5000 });
 console.log('Result:', addResult); // { result: 7 }
 
 console.log('\nSending RPC: greet("world")');
-const greetResult = await rpcQueue.addAndWait('greet', { name: 'world' }, { timeout: 5000 });
+const greetResult = await rpcQueue.addAndWait('greet', { name: 'world' }, { waitTimeout: 5000 });
 console.log('Result:', greetResult); // { message: "Hello, world!" }
 
 // --- 3. Concurrent RPC calls ---
 
 console.log('\nSending 5 concurrent RPC calls...');
 const results = await Promise.all([
-  rpcQueue.addAndWait('add', { a: 1, b: 2 }, { timeout: 5000 }),
-  rpcQueue.addAndWait('add', { a: 10, b: 20 }, { timeout: 5000 }),
-  rpcQueue.addAndWait('add', { a: 100, b: 200 }, { timeout: 5000 }),
-  rpcQueue.addAndWait('greet', { name: 'Alice' }, { timeout: 5000 }),
-  rpcQueue.addAndWait('greet', { name: 'Bob' }, { timeout: 5000 }),
+  rpcQueue.addAndWait('add', { a: 1, b: 2 }, { waitTimeout: 5000 }),
+  rpcQueue.addAndWait('add', { a: 10, b: 20 }, { waitTimeout: 5000 }),
+  rpcQueue.addAndWait('add', { a: 100, b: 200 }, { waitTimeout: 5000 }),
+  rpcQueue.addAndWait('greet', { name: 'Alice' }, { waitTimeout: 5000 }),
+  rpcQueue.addAndWait('greet', { name: 'Bob' }, { waitTimeout: 5000 }),
 ]);
 
 results.forEach((r, i) => console.log(`  [${i}]`, r));

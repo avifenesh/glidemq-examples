@@ -13,7 +13,7 @@
     "@opentelemetry/resources": "^1.30.0",
     "@opentelemetry/sdk-trace-base": "^1.30.0",
     "@opentelemetry/sdk-trace-node": "^1.30.0",
-    "glide-mq": "^0.9.0"
+    "glide-mq": "^0.11.0"
   },
   "devDependencies": {
     "@types/node": "^22",

@@ -20,7 +20,7 @@ npx tsx index.ts
 
 | Concept | Description |
 |---------|-------------|
-| `queue.addAndWait(name, data, { timeout })` | Enqueues a job and blocks until its result is available |
+| `queue.addAndWait(name, data, { waitTimeout })` | Enqueues a job and blocks until its result is available |
 | Concurrent RPC calls | `Promise.all` over multiple `addAndWait` calls |
 | Worker returning values | Return value from the processor becomes the RPC result |
 
@@ -28,5 +28,5 @@ npx tsx index.ts
 
 - `addAndWait` is synchronous from the caller's perspective - no polling required.
 - The worker processes the job normally; the caller receives the return value directly.
-- Set `timeout` (ms) to cap how long the caller waits.
+- Set `waitTimeout` (ms) to cap how long the caller waits.
 - Multiple concurrent `addAndWait` calls are safe and efficient.
