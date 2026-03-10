@@ -1,0 +1,18 @@
+{
+  "name": "@glidemq/example-broadcast-subjects",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BroadcastWorker subject-based filtering with glob pattern matching",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "glide-mq": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
