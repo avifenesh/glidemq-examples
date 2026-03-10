@@ -13,7 +13,7 @@ cd examples/core-basics && npm install && npm start
 ## Prerequisites
 
 - **Node.js** 20+
-- **glide-mq** 0.11+ (all examples target this version)
+- **glide-mq** 0.9+ (some examples require 0.11+)
 - **Valkey** 7.0+ (except [testing](examples/testing), which runs in-memory)
 
 ## Examples
@@ -105,8 +105,8 @@ Real-world patterns showing how to solve common problems with glide-mq.
 | [Advanced](https://github.com/avifenesh/glide-mq/blob/main/docs/ADVANCED.md) | Schedulers, rate limiting, dedup, compression, retries, DLQ |
 | [Workflows](https://github.com/avifenesh/glide-mq/blob/main/docs/WORKFLOWS.md) | FlowProducer, chain, group, chord pipelines |
 | [Broadcast](https://github.com/avifenesh/glide-mq/blob/main/docs/BROADCAST.md) | Pub/sub broadcast, subject filtering, BroadcastWorker |
+| [Step Jobs](https://github.com/avifenesh/glide-mq/blob/main/docs/STEP_JOBS.md) | Multi-step processors, delayed transitions, dynamic children |
 | [Serverless](https://github.com/avifenesh/glide-mq/blob/main/docs/SERVERLESS.md) | ServerlessPool, connection reuse, Lambda/Cloud Functions |
-| [Step Jobs](https://github.com/avifenesh/glide-mq/blob/main/docs/STEP_JOBS.md) | Multi-step processors, delayed transitions, state machines |
 | [Testing](https://github.com/avifenesh/glide-mq/blob/main/docs/TESTING.md) | In-memory TestQueue and TestWorker |
 | [Observability](https://github.com/avifenesh/glide-mq/blob/main/docs/OBSERVABILITY.md) | OpenTelemetry, job logs, dashboard integration |
 | [Migration](https://github.com/avifenesh/glide-mq/blob/main/docs/MIGRATION.md) | Coming from BullMQ? API mapping and migration guide |
