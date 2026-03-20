@@ -1,6 +1,10 @@
 # glide-mq Examples
 
+[![docs](https://img.shields.io/badge/docs-glide--mq.dev-6366f1)](https://avifenesh.github.io/glide-mq.dev/)
+
 Runnable examples for [glide-mq](https://github.com/avifenesh/glide-mq) covering core patterns, framework integrations, advanced features, and real-world use cases.
+
+**[Full documentation](https://avifenesh.github.io/glide-mq.dev/examples/)** | **[Core docs](https://avifenesh.github.io/glide-mq.dev/guide/getting-started)**
 
 > If glide-mq is useful to you, consider giving it a star on [GitHub](https://github.com/avifenesh/glide-mq). It helps others discover the project.
 
