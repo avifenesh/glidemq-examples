@@ -17,7 +17,7 @@ cd examples/core-basics && npm install && npm start
 ## Prerequisites
 
 - **Node.js** 20+
-- **glide-mq** 0.9+ (some examples require 0.11+)
+- **glide-mq** 0.13+ (some older examples work with 0.9+)
 - **Valkey** 7.0+ (except [testing](examples/testing), which runs in-memory)
 
 ## Examples
@@ -72,6 +72,31 @@ Focused examples for individual glide-mq capabilities.
 | [subject-filter](examples/subject-filter) | Subject-based message filtering | `glide-mq` |
 | [valkey-cluster](examples/valkey-cluster) | Running glide-mq with Valkey cluster | `glide-mq` |
 
+### AI-Native (glide-mq 0.13+)
+
+18 AI-native examples now live in the [main glide-mq repo](https://github.com/avifenesh/glide-mq/tree/main/examples). These cover the full AI orchestration surface:
+
+| Example | Description |
+|---------|-------------|
+| [usage-tracking](https://github.com/avifenesh/glide-mq/blob/main/examples/usage-tracking.ts) | Token/cost tracking with `reportUsage` and `getFlowUsage` |
+| [token-streaming](https://github.com/avifenesh/glide-mq/blob/main/examples/token-streaming.ts) | Real-time streaming with `job.stream`, `readStream`, SSE |
+| [human-approval](https://github.com/avifenesh/glide-mq/blob/main/examples/human-approval.ts) | Human-in-the-loop with `suspend` and `signal` |
+| [model-failover](https://github.com/avifenesh/glide-mq/blob/main/examples/model-failover.ts) | Ordered model/provider fallback chains |
+| [budget-cap](https://github.com/avifenesh/glide-mq/blob/main/examples/budget-cap.ts) | Flow-level token and cost budget caps |
+| [tpm-throttle](https://github.com/avifenesh/glide-mq/blob/main/examples/tpm-throttle.ts) | Dual-axis rate limiting (RPM + TPM) |
+| [vector-search](https://github.com/avifenesh/glide-mq/blob/main/examples/vector-search.ts) | Vector search over jobs with `createJobIndex` |
+| [ai-agent-loop](https://github.com/avifenesh/glide-mq/blob/main/examples/ai-agent-loop.ts) | Autonomous agent loop pattern |
+| [rag-pipeline](https://github.com/avifenesh/glide-mq/blob/main/examples/rag-pipeline.ts) | RAG pipeline with embedding and retrieval |
+| [embedding-pipeline](https://github.com/avifenesh/glide-mq/blob/main/examples/embedding-pipeline.ts) | Batch embedding generation |
+| [content-pipeline](https://github.com/avifenesh/glide-mq/blob/main/examples/content-pipeline.ts) | Multi-stage content generation |
+| [agent-memory](https://github.com/avifenesh/glide-mq/blob/main/examples/agent-memory.ts) | Agent memory and context management |
+| [adaptive-timeout](https://github.com/avifenesh/glide-mq/blob/main/examples/adaptive-timeout.ts) | Adaptive timeouts for LLM calls |
+| [with-langchain](https://github.com/avifenesh/glide-mq/blob/main/examples/with-langchain.ts) | LangChain integration |
+| [with-vercel-ai-sdk](https://github.com/avifenesh/glide-mq/blob/main/examples/with-vercel-ai-sdk.ts) | Vercel AI SDK integration |
+| [search-dashboard](https://github.com/avifenesh/glide-mq/blob/main/examples/search-dashboard.ts) | Search dashboard with vector queries |
+| [llm](https://github.com/avifenesh/glide-mq/blob/main/examples/llm.ts) | Basic LLM call orchestration |
+| [testing-mode](https://github.com/avifenesh/glide-mq/blob/main/examples/testing-mode.ts) | In-memory testing for AI workflows |
+
 ### Use Cases
 
 Real-world patterns showing how to solve common problems with glide-mq.
@@ -90,7 +115,7 @@ Real-world patterns showing how to solve common problems with glide-mq.
 
 | Package | Description |
 |---------|-------------|
-| [glide-mq](https://github.com/avifenesh/glide-mq) | Core queue library -- producers, workers, schedulers, workflows |
+| [glide-mq](https://github.com/avifenesh/glide-mq) | AI-native queue library -- orchestration, streaming, failover, budget caps |
 | [@glidemq/hono](https://github.com/avifenesh/glidemq-hono) | Hono middleware -- REST API + SSE for queue management |
 | [@glidemq/fastify](https://github.com/avifenesh/glidemq-fastify) | Fastify plugin -- REST API + SSE for queue management |
 | [@glidemq/dashboard](https://github.com/avifenesh/glidemq-dashboard) | Express middleware -- web UI for monitoring queues |
