@@ -1,0 +1,20 @@
+{
+  "name": "glidemq-example-ai-usage-and-costs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Token and cost tracking examples - per-job usage, flow aggregation, multi-model cost comparison",
+  "type": "module",
+  "scripts": {
+    "usage-tracking": "npx tsx usage-tracking.ts",
+    "cost-breakdown": "npx tsx cost-breakdown.ts",
+    "multi-model-cost": "npx tsx multi-model-cost.ts",
+    "thinking-model": "npx tsx thinking-model.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

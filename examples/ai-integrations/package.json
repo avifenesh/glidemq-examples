@@ -1,0 +1,22 @@
+{
+  "name": "glidemq-example-ai-integrations",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Third-party AI SDK integrations - LangChain and Vercel AI SDK with durable execution",
+  "type": "module",
+  "scripts": {
+    "with-langchain": "npx tsx with-langchain.ts",
+    "with-vercel-ai-sdk": "npx tsx with-vercel-ai-sdk.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest",
+    "@langchain/openai": "^0.4.4",
+    "@langchain/core": "^0.3.40",
+    "ai": "^4.3.6",
+    "@ai-sdk/openai": "^1.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

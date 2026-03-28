@@ -1,0 +1,24 @@
+{
+  "name": "glidemq-example-ai-agents",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agent patterns - ReAct loops, memory, failover chains, human-in-the-loop, content pipelines",
+  "type": "module",
+  "scripts": {
+    "ai-agent-loop": "npx tsx ai-agent-loop.ts",
+    "agent-memory": "npx tsx agent-memory.ts",
+    "model-failover": "npx tsx model-failover.ts",
+    "fallback-usage": "npx tsx fallback-usage.ts",
+    "human-approval": "npx tsx human-approval.ts",
+    "content-pipeline": "npx tsx content-pipeline.ts",
+    "adaptive-timeout": "npx tsx adaptive-timeout.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest",
+    "@glidemq/speedkey": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

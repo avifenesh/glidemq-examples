@@ -1,0 +1,19 @@
+{
+  "name": "glidemq-example-ai-streaming",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Token streaming and SSE patterns - typed chunks, reasoning streams, reconnection",
+  "type": "module",
+  "scripts": {
+    "streaming-sse": "npx tsx streaming-sse.ts",
+    "token-streaming": "npx tsx token-streaming.ts",
+    "reasoning-stream": "npx tsx reasoning-stream.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "glidemq-example-ai-search",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Search and vector examples - job search, KNN similarity, RAG pipelines, embedding ingestion",
+  "type": "module",
+  "scripts": {
+    "search-dashboard": "npx tsx search-dashboard.ts",
+    "vector-search": "npx tsx vector-search.ts",
+    "rag-pipeline": "npx tsx rag-pipeline.ts",
+    "embedding-pipeline": "npx tsx embedding-pipeline.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest",
+    "@glidemq/speedkey": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

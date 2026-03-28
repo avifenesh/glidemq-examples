@@ -1,0 +1,21 @@
+{
+  "name": "glidemq-example-ai-budget",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Budget enforcement and TPM rate limiting - per-category caps, weighted totals, token throttling",
+  "type": "module",
+  "scripts": {
+    "budget-cap": "npx tsx budget-cap.ts",
+    "budget-weighted": "npx tsx budget-weighted.ts",
+    "agent-budget-loop": "npx tsx agent-budget-loop.ts",
+    "batch-embed-tpm": "npx tsx batch-embed-tpm.ts",
+    "tpm-throttle": "npx tsx tpm-throttle.ts"
+  },
+  "dependencies": {
+    "glide-mq": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}
