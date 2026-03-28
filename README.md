@@ -31,7 +31,7 @@ Ordering keys, rate limiting, dedup, stall detection, custom job IDs, pluggable 
 ## Links
 
 - [glide-mq](https://github.com/avifenesh/glide-mq) - core library
-- [Documentation](https://avifenesh.github.io/glide-mq.dev/)
+- [Documentation](https://avifenesh.github.io/glidemq.dev/)
 - [@glidemq/hono](https://github.com/avifenesh/glidemq-hono) | [@glidemq/fastify](https://github.com/avifenesh/glidemq-fastify) | [@glidemq/hapi](https://github.com/avifenesh/glidemq-hapi) | [@glidemq/nestjs](https://github.com/avifenesh/glidemq-nestjs) | [@glidemq/dashboard](https://github.com/avifenesh/glidemq-dashboard)
 
 ## License
