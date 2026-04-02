@@ -28,7 +28,7 @@ Requires **Node.js 20+**, **glide-mq >= 0.14.0**, and **Valkey 7.0+** (TestQueue
 
 Ordering keys, rate limiting, dedup, stall detection, custom job IDs, pluggable serializers, request-reply, serverless producers, Valkey cluster, and more. See [examples/](examples/) for the full list.
 
-Need cross-language access from Python, Go, Ruby, or shell scripts? Start with [HTTP Proxy](examples/http-proxy) for queue routes, queue events SSE, rolling usage summaries, and broadcast publish/SSE over HTTP.
+Need cross-language access from Python, Go, Ruby, or shell scripts? Start with [HTTP Proxy](examples/http-proxy) for queue routes, flow create/read/tree/delete, queue events SSE, rolling usage summaries, and broadcast publish/SSE over HTTP.
 
 ## Links
 

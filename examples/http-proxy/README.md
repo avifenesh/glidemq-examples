@@ -26,6 +26,10 @@ npx tsx index.ts
 | `GET /queues/:name/jobs/:id` | Get job by ID |
 | `GET /queues/:name/counts` | Get job counts |
 | `GET /queues/:name/events` | Subscribe to queue lifecycle events over SSE |
+| `POST /flows` | Create a tree flow or DAG over HTTP |
+| `GET /flows/:id` | Read the current flow snapshot |
+| `GET /flows/:id/tree` | Read the nested flow tree |
+| `DELETE /flows/:id` | Revoke or flag remaining jobs in a flow |
 | `GET /usage/summary` | Read rolling usage totals across one or more queues |
 | `POST /broadcast/:name` | Publish a broadcast message |
 | `GET /broadcast/:name/events` | Read a durable broadcast subscription over SSE |
@@ -34,12 +38,13 @@ npx tsx index.ts
 
 ## Notes
 
-- The proxy is an Express app - any HTTP client (Python, Go, Ruby, curl) can enqueue jobs, read queue events, publish broadcasts, and query usage summaries.
+- The proxy is an Express app - any HTTP client (Python, Go, Ruby, curl) can enqueue jobs, create flows, read queue events, publish broadcasts, and query usage summaries.
 - Workers are separate Node.js processes that consume from the same queues.
-- Pass `queues: ['allowed', 'names']` to restrict access. The same allowlist applies to queue names in `/usage/summary?queues=...` and to `/broadcast/:name`.
+- Pass `queues: ['allowed', 'names']` to restrict access. The same allowlist applies to queue names in `/usage/summary?queues=...`, `/broadcast/:name`, and queue names referenced inside `POST /flows`.
 - Install `express` as a peer dependency alongside `glide-mq`.
 - The proxy supports all job options: `delay`, `priority`, `attempts`, `jobId`, etc.
 - Broadcast SSE requires a durable `subscription` query param and supports optional `subjects=orders.*,...` filtering.
+- `POST /flows` accepts tree flows with optional `budget` plus DAG payloads. HTTP budgets are currently supported for tree flows only.
 
 ## Example: enqueue from curl
 
