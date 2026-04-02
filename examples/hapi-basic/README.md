@@ -29,4 +29,4 @@ Requires Valkey/Redis on localhost:6379.
 
 ## See also
 
-- [hapi-api](../hapi-api) - uses `@glidemq/hapi` plugin for 21 endpoints with zero boilerplate
+- [hapi-api](../hapi-api) - uses `@glidemq/hapi` for the full queue HTTP API, usage summaries, and broadcast SSE with zero boilerplate

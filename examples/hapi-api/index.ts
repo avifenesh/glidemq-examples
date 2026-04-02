@@ -33,7 +33,7 @@ await server.register({
   options: registry as any,
 });
 
-// Mount REST API (21 endpoints + SSE)
+// Mount queue HTTP API + SSE
 await server.register({
   plugin: glideMQRoutes,
   options: { prefix: '/api/queues' },

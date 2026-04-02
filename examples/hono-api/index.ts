@@ -32,7 +32,7 @@ const app = new Hono<GlideMQEnv>();
 // Mount middleware - injects registry into c.var.glideMQ
 app.use(glideMQ(registry));
 
-// Mount REST API (11 endpoints + SSE)
+// Mount queue HTTP API + SSE
 app.route('/api/queues', glideMQApi());
 
 // Custom route using the queue directly

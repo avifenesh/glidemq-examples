@@ -30,7 +30,7 @@ const app = Fastify({ logger: true });
 // Register core plugin with pre-built registry
 await app.register(glideMQPlugin, registry as any);
 
-// Mount REST API (11 endpoints + SSE)
+// Mount queue HTTP API + SSE
 await app.register(glideMQRoutes, { prefix: '/api/queues' });
 
 // Custom route using the queue directly

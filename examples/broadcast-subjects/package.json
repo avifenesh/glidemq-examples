@@ -8,7 +8,7 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "glide-mq": "^0.11.0"
+    "glide-mq": "^0.14.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

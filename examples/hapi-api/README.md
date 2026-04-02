@@ -4,36 +4,22 @@ Full REST API + SSE events for glide-mq queue management using `@glidemq/hapi`.
 
 ## Features
 
-- 21 REST endpoints for queue/job management
+- Full queue HTTP API for jobs, counts, workers, schedulers, flow usage/budget, usage summary, and broadcast routes
 - Server-Sent Events for real-time updates
-- Zod validation (optional)
+- Joi validation
 - Custom routes with direct queue access via `request.server.glidemq`
 - In-memory testing mode
 - Automatic graceful shutdown via Hapi's `onPostStop` hook
 
-## Endpoints
+## Highlighted routes
 
 - `POST /api/queues/{name}/jobs` - add job
-- `POST /api/queues/{name}/jobs/wait` - add and wait for result
-- `GET /api/queues/{name}/jobs` - list jobs by state
-- `GET /api/queues/{name}/jobs/{id}` - job details
-- `POST /api/queues/{name}/jobs/{id}/priority` - change priority
-- `POST /api/queues/{name}/jobs/{id}/delay` - change delay
-- `POST /api/queues/{name}/jobs/{id}/promote` - promote delayed job
-- `GET /api/queues/{name}/counts` - job counts by state
-- `GET /api/queues/{name}/metrics` - queue metrics
-- `POST /api/queues/{name}/pause` - pause queue
-- `POST /api/queues/{name}/resume` - resume queue
-- `POST /api/queues/{name}/drain` - drain queue
-- `POST /api/queues/{name}/retry` - retry failed jobs
-- `DELETE /api/queues/{name}/clean` - clean old jobs
-- `GET /api/queues/{name}/workers` - list workers
-- `GET /api/queues/{name}/events` - SSE stream
-- `POST /api/queues/{name}/produce` - serverless produce
-- `GET /api/queues/{name}/schedulers` - list schedulers
-- `GET /api/queues/{name}/schedulers/{schedulerName}` - get scheduler
-- `PUT /api/queues/{name}/schedulers/{schedulerName}` - upsert scheduler
-- `DELETE /api/queues/{name}/schedulers/{schedulerName}` - remove scheduler
+- `GET /api/queues/{name}/events` - queue lifecycle SSE
+- `GET /api/queues/{name}/flows/{id}/usage` - flow usage summary
+- `GET /api/queues/{name}/flows/{id}/budget` - flow budget state
+- `GET /api/queues/usage/summary` - rolling usage summary across queues
+- `POST /api/queues/broadcast/{name}` - publish a broadcast message
+- `GET /api/queues/broadcast/{name}/events?subscription=...` - durable broadcast SSE
 
 ## Run
 

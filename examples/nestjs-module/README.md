@@ -13,6 +13,7 @@ Comprehensive example of `@glidemq/nestjs` - demonstrates every major feature us
 - `@InjectFlowProducer` for flow producer injection
 - `@QueueEventsListener` + `QueueEventsHost` for queue-level event monitoring
 - `@OnQueueEvent` for queue events (completed, progress, stalled)
+- Programmatic AI-native APIs on injected queues, including `queue.getUsageSummary()`
 - Feature module pattern (OrderModule with its own queue registration)
 - Job progress tracking with `job.updateProgress()`
 - Job logging with `job.log()`
@@ -96,4 +97,5 @@ curl http://localhost:3000/orders/<job-id>
 ## Docs
 
 - [@glidemq/nestjs](https://github.com/avifenesh/glidemq-nestjs)
+- [Integration guide](https://glidemq.dev/integrations/nestjs)
 - [glide-mq Usage](https://github.com/avifenesh/glide-mq/blob/main/docs/USAGE.md)
