@@ -166,11 +166,17 @@ async function httpPost<T = unknown>(path: string, body: unknown): Promise<T> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
+  if (!res.ok) {
+    throw new Error(`POST ${path} failed: ${res.status} ${await res.text()}`);
+  }
   return res.json() as Promise<T>;
 }
 
 async function httpGet<T = unknown>(path: string): Promise<T> {
   const res = await fetch(`http://localhost:${PORT}${path}`);
+  if (!res.ok) {
+    throw new Error(`GET ${path} failed: ${res.status} ${await res.text()}`);
+  }
   return res.json() as Promise<T>;
 }
 
@@ -178,6 +184,12 @@ async function httpDelete<T = unknown>(path: string): Promise<T> {
   const res = await fetch(`http://localhost:${PORT}${path}`, {
     method: 'DELETE',
   });
+  if (!res.ok) {
+    throw new Error(`DELETE ${path} failed: ${res.status} ${await res.text()}`);
+  }
+  if (res.status === 204) {
+    return undefined as T;
+  }
   return res.json() as Promise<T>;
 }
 
