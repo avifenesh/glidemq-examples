@@ -6,7 +6,7 @@
     "start": "npx tsx index.ts"
   },
   "dependencies": {
-    "glide-mq": "^0.14.0"
+    "glide-mq": "^0.15.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

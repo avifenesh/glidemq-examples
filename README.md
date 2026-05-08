@@ -10,7 +10,7 @@ Runnable examples for [glide-mq](https://github.com/avifenesh/glide-mq) - high-p
 cd examples/core-basics && npm install && npm start
 ```
 
-Requires **Node.js 20+**, **glide-mq >= 0.14.0**, and **Valkey 7.0+** (TestQueue examples run in-memory without Valkey).
+Requires **Node.js 20+**, **glide-mq >= 0.15.2**, and **Valkey 7.0+** (TestQueue examples run in-memory without Valkey).
 
 ## Examples
 
