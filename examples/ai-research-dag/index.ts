@@ -24,9 +24,10 @@
  *     workers can see how a DAG composes with linear post-processing.
  *
  * The LLM calls are mocked (no API keys needed). Each stage reports token
- * usage with reportUsage() so the example demonstrates how glide-mq's
- * AI-native budget primitives compose with DAG flows: the FlowProducer.add()
- * budget caps the total spend across the entire graph.
+ * usage with reportUsage(), and we aggregate per-stage spend at the end by
+ * walking the jobs map returned from addDAG (Queue.getFlowUsage only walks
+ * one hop down the flow, which undercounts a multi-level DAG). DAG-wide
+ * budget enforcement is a planned follow-up.
  *
  * Run:
  *   docker run --rm -p 6379:6379 valkey/valkey:8.0   # or Redis
@@ -97,7 +98,14 @@ const worker = new Worker<{ question: string }, unknown>(
         // search-* in BullMQ-flow terms. getChildrenValues() returns it.
         const upstream = await job.getChildrenValues();
         const plan = Object.values(upstream)[0] as { subQueries: string[] };
-        const subQuery = plan?.subQueries?.[0] ?? question;
+        // Each search stage picks its own sub-query so the parallel branches
+        // genuinely cover different research angles.
+        const subQueryIndex: Record<string, number> = {
+          'search-web': 0,
+          'search-docs': 1,
+          'search-news': 2,
+        };
+        const subQuery = plan?.subQueries?.[subQueryIndex[job.name] ?? 0] ?? question;
 
         const res = await mockLLM(`${job.name}: ${subQuery}`, {
           model: 'searcher', inputTokens: 200, outputTokens: 600,
@@ -115,10 +123,13 @@ const worker = new Worker<{ question: string }, unknown>(
       }
 
       case 'synthesize': {
-        // Reads all three search-* outputs.
-        const searches = await job.getChildrenValues() as Record<string, { source: string; findings: string[] }>;
+        // Reads all three search-* outputs. Optional chaining on s.findings
+        // because in real pipelines an upstream stage may have returned a
+        // partial / unexpected shape (provider quirk, retried fallback, etc.)
+        // and we'd rather degrade than crash the worker.
+        const searches = await job.getChildrenValues() as Record<string, { source?: string; findings?: string[] }>;
         const sources = Object.values(searches);
-        const allFindings = sources.flatMap((s) => s.findings);
+        const allFindings = sources.flatMap((s) => s?.findings ?? []);
 
         const res = await mockLLM(`Synthesize ${allFindings.length} findings about "${question}"`, {
           model: 'synthesizer', inputTokens: 1200, outputTokens: 800,
@@ -127,7 +138,7 @@ const worker = new Worker<{ question: string }, unknown>(
         return {
           draft:
             `Draft answer for "${question}":\n` +
-            sources.map((s) => `  • ${s.source}: ${s.findings.length} findings`).join('\n'),
+            sources.map((s) => `  • ${s?.source ?? 'unknown'}: ${s?.findings?.length ?? 0} findings`).join('\n'),
           findingCount: allFindings.length,
           synthesisNote: res.text,
         };
