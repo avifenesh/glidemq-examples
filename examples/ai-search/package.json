@@ -11,8 +11,8 @@
     "embedding-pipeline": "npx tsx embedding-pipeline.ts"
   },
   "dependencies": {
-    "glide-mq": "latest",
-    "@glidemq/speedkey": "latest"
+    "glide-mq": "^0.17.0",
+    "@glidemq/speedkey": "^0.4.2"
   },
   "devDependencies": {
     "@types/node": "^22",

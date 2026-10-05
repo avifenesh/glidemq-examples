@@ -9,7 +9,8 @@
  * No Valkey needed - uses TestQueue/TestWorker.
  * Run: npx tsx examples/agent-budget-loop.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 async function main() {
   const queue = new TestQueue('agent-loop');
@@ -36,7 +37,7 @@ async function main() {
   let cumulativeWeighted = 0;
   const log: { step: number; tokens: Record<string, number>; weighted: number; cumulative: number }[] = [];
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     if (job.name === 'agent-parent') return { step: -1, action: 'parent' };
 
     const step = job.data.step as number;

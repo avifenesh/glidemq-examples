@@ -8,8 +8,9 @@
  *
  * Run: npx tsx examples/tpm-throttle.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `tpm-throttle-${Date.now()}`;
 
@@ -19,7 +20,7 @@ async function main() {
   const start = Date.now();
   let completed = 0;
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const messages: Message[] = [
       { role: 'user', content: job.data.prompt },
     ];

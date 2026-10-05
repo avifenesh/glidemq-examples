@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@koa/router": "^15.3.1",
-    "glide-mq": "latest",
+    "glide-mq": "^0.17.0",
     "koa": "^3.1.2",
     "koa-bodyparser": "^4.4.1"
   },

@@ -8,8 +8,9 @@
  *
  * Run: npx tsx examples/thinking-model.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `thinking-model-${Date.now()}`;
 
@@ -18,7 +19,7 @@ async function main() {
 
   const worker = new Worker(
     QUEUE,
-    async (job) => {
+    async (job: Job) => {
       const messages: Message[] = [{ role: 'user', content: job.data.prompt }];
 
       const start = Date.now();

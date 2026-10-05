@@ -98,6 +98,7 @@ const streamJob = await queue.add('stream-task', {
   type: 'stream',
   payload: 'This job will be picked up and hung',
 });
+if (!streamJob) throw new Error('Stream job was not added');
 console.log(`  Added stream job: ${streamJob.id}`);
 
 // Wait for the hung worker to pick it up
@@ -164,6 +165,7 @@ const lifoJob = await queue.add('lifo-task', {
   type: 'lifo',
   payload: 'This LIFO job will be picked up and hung',
 }, { lifo: true });
+if (!lifoJob) throw new Error('LIFO job was not added');
 console.log(`  Added LIFO job: ${lifoJob.id} (lifo: true)`);
 
 // Wait for the hung worker to pick it up

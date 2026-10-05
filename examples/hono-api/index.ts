@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { bearerAuth } from 'hono/bearer-auth';
 import { serve } from '@hono/node-server';
 import { glideMQ, glideMQApi, QueueRegistryImpl } from '@glidemq/hono';
 import type { GlideMQEnv } from '@glidemq/hono';
@@ -28,12 +29,18 @@ const registry = new QueueRegistryImpl({
 });
 
 const app = new Hono<GlideMQEnv>();
+const apiToken = process.env.QUEUE_API_TOKEN;
+if (!apiToken) throw new Error('Set QUEUE_API_TOKEN before starting the API');
+
+app.use('*', bearerAuth({ token: apiToken }));
 
 // Mount middleware - injects registry into c.var.glideMQ
 app.use(glideMQ(registry));
 
 // Mount queue HTTP API + SSE
-app.route('/api/queues', glideMQApi());
+app.route('/api/queues', glideMQApi({
+  authorize: (c) => c.req.header('Authorization') === `Bearer ${apiToken}`,
+}));
 
 // Custom route using the queue directly
 app.post('/send-email', async (c) => {

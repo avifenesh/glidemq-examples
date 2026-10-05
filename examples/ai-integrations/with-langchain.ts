@@ -11,8 +11,9 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { Queue, Worker, FlowProducer } from '../dist/index';
-import { CONNECTION } from './llm';
+import { Queue, Worker, FlowProducer } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { CONNECTION } from './llm.js';
 
 const QUEUE = `langchain-${Date.now()}`;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
@@ -62,7 +63,7 @@ async function main() {
   const flow = new FlowProducer({ connection: CONNECTION });
   const results: Record<string, any> = {};
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { step, topic, research, summary } = job.data;
 
     if (step === 'aggregate') {

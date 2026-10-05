@@ -1,5 +1,5 @@
 import Hapi from '@hapi/hapi';
-import { glideMQPlugin, glideMQRoutes, QueueRegistryImpl } from '@glidemq/hapi';
+import { glideMQPlugin } from '@glidemq/hapi';
 import type { Job } from 'glide-mq';
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
@@ -16,28 +16,18 @@ async function processOrder(job: Job) {
   return { orderId: job.data.orderId, status: 'shipped' };
 }
 
-// Create registry for graceful shutdown access
-const registry = new QueueRegistryImpl({
-  connection,
-  queues: {
-    emails: { processor: processEmail, concurrency: 5 },
-    orders: { processor: processOrder, concurrency: 3 },
-  },
-});
+const queues = {
+  emails: { processor: processEmail, concurrency: 5 },
+  orders: { processor: processOrder, concurrency: 3 },
+};
 
 const server = Hapi.server({ port: 3000, host: 'localhost' });
 
-// Register core plugin with pre-built registry
+// Register the plugin and mount its HTTP API in a prefixed Hapi realm.
 await server.register({
   plugin: glideMQPlugin,
-  options: registry as any,
-});
-
-// Mount queue HTTP API + SSE
-await server.register({
-  plugin: glideMQRoutes,
-  options: { prefix: '/api/queues' },
-});
+  options: { connection, queues, routes: true },
+}, { routes: { prefix: '/api/queues' } });
 
 // Custom route using the queue directly
 server.route({

@@ -1,13 +1,13 @@
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
-import { Queue, Worker } from 'glide-mq';
+import { Queue, Worker, type Job } from 'glide-mq';
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
 
 const emailQueue = new Queue('emails', { connection });
 
 // Worker - processes jobs in background
-const worker = new Worker('emails', async (job) => {
+const worker = new Worker('emails', async (job: Job) => {
   console.log(`Sending email to ${job.data.to}: ${job.data.subject}`);
   // Simulate email sending
   await new Promise(r => setTimeout(r, 500));

@@ -9,12 +9,13 @@
  *
  * Run: npx tsx examples/reasoning-stream.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 async function main() {
   const queue = new TestQueue('reasoning-stream');
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     // Simulate a thinking model: first reasoning, then content
     const reasoningSteps = [
       'The user asks for prime factors of 84.',

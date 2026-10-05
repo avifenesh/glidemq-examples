@@ -9,8 +9,9 @@
  */
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText, streamText } from 'ai';
-import { Queue, Worker } from '../dist/index';
-import { CONNECTION, MODELS } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { CONNECTION, MODELS } from './llm.js';
 
 const QUEUE = `vercel-ai-${Date.now()}`;
 
@@ -18,7 +19,6 @@ const openrouter = createOpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENROUTER_API_KEY,
   name: 'openrouter',
-  compatibility: 'compatible',
 });
 
 async function main() {
@@ -27,7 +27,7 @@ async function main() {
   // --- Example 1: generateText ---
   console.log('=== Example 1: generateText ===\n');
 
-  const genWorker = new Worker(QUEUE, async (job) => {
+  const genWorker = new Worker(QUEUE, async (job: Job) => {
     const { prompt, model } = job.data;
 
     if (job.data.mode === 'stream') {
@@ -35,7 +35,7 @@ async function main() {
       const result = streamText({
         model: openrouter.chat(model),
         prompt,
-        maxTokens: 150,
+        maxOutputTokens: 150,
       });
 
       for await (const chunk of result.textStream) {
@@ -58,7 +58,7 @@ async function main() {
     const result = await generateText({
       model: openrouter.chat(model),
       prompt,
-      maxTokens: 150,
+      maxOutputTokens: 150,
     });
 
     await job.reportUsage({

@@ -4,13 +4,24 @@
 
 Runnable examples for [glide-mq](https://github.com/avifenesh/glide-mq) - high-performance message queue with AI-native orchestration primitives.
 
+The examples target glide-mq 0.17.0, Speedkey 0.4.2, Hono 0.5.1, Fastify 0.3.2, Hapi 0.4.2, NestJS 0.2.3, and Dashboard 0.4.2.
+
 ## Quick start
 
 ```bash
 cd examples/core-basics && npm install && npm start
 ```
 
-Requires **Node.js 20+**, **glide-mq >= 0.15.2**, and **Valkey 7.0+** (TestQueue examples run in-memory without Valkey).
+Requires **Node.js 20+**, **glide-mq >= 0.17.0**, and **Valkey 7.0+** (TestQueue examples run in-memory without Valkey).
+
+To install each example's dependencies and check all TypeScript examples without running services or AI calls:
+
+```bash
+npm install
+npm run typecheck -- --install
+```
+
+After dependencies are installed, use `npm run typecheck` to repeat the check.
 
 ## Examples
 

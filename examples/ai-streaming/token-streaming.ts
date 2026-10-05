@@ -8,15 +8,16 @@
  *
  * Run: npx tsx examples/token-streaming.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { streamChat, MODELS, CONNECTION } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { streamChat, MODELS, CONNECTION } from './llm.js';
 
 const QUEUE = `token-streaming-${Date.now()}`;
 
 async function main() {
   const queue = new Queue(QUEUE, { connection: CONNECTION });
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { prompt, model } = job.data;
     let full = '';
     let totalIn = 0;

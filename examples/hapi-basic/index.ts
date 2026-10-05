@@ -29,7 +29,7 @@ emailWorker.on('error', (err) => console.error('Email worker error:', err));
 orderWorker.on('error', (err) => console.error('Order worker error:', err));
 
 // Queue registry helper
-function getQueue(name: string): Queue | null {
+function getQueue(name: unknown): Queue | null {
   if (name === 'emails') return emailQueue;
   if (name === 'orders') return orderQueue;
   return null;
@@ -81,7 +81,9 @@ server.route({
     const queue = getQueue(request.params.name);
     if (!queue) return h.response({ error: 'Queue not found' }).code(404);
 
-    const job = await queue.getJob(request.params.id);
+    const id = request.params.id;
+    if (typeof id !== 'string') return h.response({ error: 'Invalid job ID' }).code(400);
+    const job = await queue.getJob(id);
     if (!job) return h.response({ error: 'Job not found' }).code(404);
 
     return h.response({ id: job.id, name: job.name, data: job.data });

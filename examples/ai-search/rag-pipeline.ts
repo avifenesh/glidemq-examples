@@ -9,8 +9,9 @@
  *
  * Run: npx tsx examples/rag-pipeline.ts
  */
-import { Queue, Worker, FlowProducer } from '../dist/index';
-import { chat, streamChat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker, FlowProducer } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, streamChat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `rag-pipeline-${Date.now()}`;
 
@@ -21,7 +22,7 @@ async function main() {
 
   const worker = new Worker(
     QUEUE,
-    async (job) => {
+    async (job: Job) => {
       const { step } = job.data;
 
       if (step === 'embed') {

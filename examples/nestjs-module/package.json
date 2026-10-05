@@ -8,16 +8,16 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@glidemq/nestjs": "^0.2.0",
-    "@nestjs/common": "^10.4.0",
+    "@glidemq/nestjs": "^0.2.3",
+    "@nestjs/common": "^11.1.18",
     "@nestjs/core": "^11.1.18",
-    "@nestjs/platform-express": "^10.4.0",
-    "glide-mq": "latest",
+    "@nestjs/platform-express": "^11.1.18",
+    "glide-mq": "^0.17.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
-    "@nestjs/testing": "^10.4.0",
+    "@nestjs/testing": "^11.1.18",
     "@types/node": "^22",
     "ts-node": "^10.9.0",
     "tsconfig-paths": "^4.2.0",

@@ -8,7 +8,8 @@
  *
  * Run: npx tsx examples/testing-mode.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 let passed = 0;
 let failed = 0;
@@ -29,7 +30,7 @@ async function testReportUsage() {
   const queue = new TestQueue('usage-test');
 
   let capturedUsage: any = null;
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     await job.reportUsage({
       model: 'gpt-4',
       provider: 'openai',
@@ -65,7 +66,7 @@ async function testStreaming() {
   console.log('\nTest 2: stream + readStream');
   const queue = new TestQueue('stream-test');
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     const words = ['Hello', ' ', 'world', '!'];
     for (const w of words) {
       await job.stream({ t: w });
@@ -98,7 +99,7 @@ async function testSuspendSignal() {
   const queue = new TestQueue('suspend-test');
 
   let invocations = 0;
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     invocations++;
 
     if (job.signals.length > 0) {
@@ -139,7 +140,7 @@ async function testFallbackChain() {
 
   const attempts: { model: string; index: number }[] = [];
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     const fallback = job.currentFallback;
     const model = fallback ? fallback.model : 'primary-model';
     const idx = job.fallbackIndex;

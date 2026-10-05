@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^21",
-    "glide-mq": "latest"
+    "glide-mq": "^0.17.0"
   },
   "devDependencies": {
     "@types/node": "^22",

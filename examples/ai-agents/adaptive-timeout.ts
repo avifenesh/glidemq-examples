@@ -7,8 +7,9 @@
  *
  * Run: npx tsx examples/adaptive-timeout.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `adaptive-timeout-${Date.now()}`;
 
@@ -23,7 +24,7 @@ async function main() {
   const queue = new Queue(QUEUE, { connection: CONNECTION });
   const results: TaskResult[] = [];
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { task, prompt, model } = job.data;
     const lock = job.opts.lockDuration ?? 30_000;
     const start = Date.now();
