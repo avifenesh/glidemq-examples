@@ -6,7 +6,7 @@ Full REST API + SSE events for glide-mq queue management using `@glidemq/hono`.
 
 - Full queue HTTP API for jobs, counts, workers, schedulers, flow create/read/tree/delete, flow usage/budget, usage summary, and broadcast routes
 - Server-Sent Events for real-time updates
-- Type-safe RPC client (optional)
+- HTTP client access with bearer authentication
 - Zod validation (optional)
 - Custom routes with direct queue access via `c.var.glideMQ`
 - In-memory testing mode
