@@ -9,8 +9,9 @@
  * Run: npx tsx examples/agent-memory.ts
  */
 import { GlideClient } from '@glidemq/speedkey';
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `agent-memory-${Date.now()}`;
 const MEMORY_KEY = `memory:${Date.now()}`;
@@ -21,7 +22,7 @@ async function main() {
 
   const completedResults: { turn: number; reply: string }[] = [];
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { userId, userMessage, turn } = job.data;
 
     // Load memory (prior conversation turns)

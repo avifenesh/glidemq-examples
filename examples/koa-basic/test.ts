@@ -2,6 +2,7 @@ import Koa from 'koa';
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 let passed = 0;
 let failed = 0;
@@ -22,7 +23,7 @@ async function main() {
   // Set up test queues (in-memory, no Valkey needed)
   const emailQueue = new TestQueue('emails');
   const orderQueue = new TestQueue('orders');
-  const emailWorker = new TestWorker(emailQueue, async (job) => ({ sent: true, to: job.data.to }));
+  const emailWorker = new TestWorker(emailQueue, async (job: Job) => ({ sent: true, to: job.data.to }));
 
   // Build Koa app (same routes as index.ts but with test queues)
   const app = new Koa();

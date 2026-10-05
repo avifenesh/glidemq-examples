@@ -7,8 +7,9 @@
  *
  * Run: npx tsx examples/budget-cap.ts
  */
-import { Queue, Worker, FlowProducer } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker, FlowProducer } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `budget-cap-${Date.now()}`;
 
@@ -18,7 +19,7 @@ async function main() {
   const completedJobs: { name: string; tokens: number }[] = [];
   const failedJobs: { name: string; reason: string }[] = [];
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     if (job.name === 'budget-parent') {
       const children = await job.getChildrenValues();
       return { childCount: Object.keys(children).length };

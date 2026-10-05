@@ -7,8 +7,9 @@
  *
  * Run: npx tsx examples/usage-tracking.ts
  */
-import { Queue, Worker, FlowProducer } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker, FlowProducer } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `usage-tracking-${Date.now()}`;
 
@@ -16,7 +17,7 @@ async function main() {
   const queue = new Queue(QUEUE, { connection: CONNECTION });
   const flow = new FlowProducer({ connection: CONNECTION });
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { task, topic } = job.data;
     const model = task === 'research' ? MODELS.fast
       : task === 'draft' ? MODELS.nano

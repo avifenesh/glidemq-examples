@@ -8,8 +8,9 @@
  * Run: npx tsx examples/human-approval.ts
  */
 import readline from 'readline';
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `human-approval-${Date.now()}`;
 
@@ -18,7 +19,7 @@ async function main() {
   let completedResult: any = null;
   let failedReason: string | null = null;
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { complaint } = job.data;
 
     if (job.signals.length > 0) {

@@ -8,8 +8,9 @@
  *
  * Run: npx tsx examples/broadcast-events.ts
  */
-import { Broadcast, BroadcastWorker } from '../dist/index';
-import { CONNECTION } from './llm';
+import { Broadcast, BroadcastWorker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+const CONNECTION = { addresses: [{ host: 'localhost', port: 6379 }] };
 
 const CHANNEL = `ai-events-${Date.now()}`;
 
@@ -23,7 +24,7 @@ async function main() {
   };
 
   // Worker 1: Logger - receives ALL ai events
-  const logger = new BroadcastWorker(CHANNEL, async (job) => {
+  const logger = new BroadcastWorker(CHANNEL, async (job: Job) => {
     received.logger.push(job.data.subject);
     console.log(`  [logger]  ${job.data.subject}: ${JSON.stringify(job.data.payload)}`);
   }, {
@@ -33,7 +34,7 @@ async function main() {
   });
 
   // Worker 2: Billing - only ai.billing.* events
-  const billing = new BroadcastWorker(CHANNEL, async (job) => {
+  const billing = new BroadcastWorker(CHANNEL, async (job: Job) => {
     received.billing.push(job.data.subject);
     console.log(`  [billing] ${job.data.subject}: cost=$${job.data.payload.cost}`);
   }, {
@@ -43,7 +44,7 @@ async function main() {
   });
 
   // Worker 3: Alerts - only ai.inference.failed events
-  const alerts = new BroadcastWorker(CHANNEL, async (job) => {
+  const alerts = new BroadcastWorker(CHANNEL, async (job: Job) => {
     received.alerts.push(job.data.subject);
     console.log(`  [alerts]  ${job.data.subject}: ${job.data.payload.error}`);
   }, {

@@ -9,8 +9,9 @@
  *
  * Run: npx tsx examples/ai-agent-loop.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `ai-agent-${Date.now()}`;
 
@@ -24,7 +25,7 @@ async function main() {
   const queue = new Queue(QUEUE, { connection: CONNECTION });
   let finalResult: any = null;
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { task, history = [], iteration = 0 } = job.data;
 
     // Check for human signal on resume

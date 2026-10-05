@@ -1,5 +1,5 @@
 import express from 'express';
-import { Queue, Worker } from 'glide-mq';
+import { Queue, Worker, type Job } from 'glide-mq';
 import { createDashboard } from '@glidemq/dashboard';
 
 const connection = { addresses: [{ host: 'localhost', port: 6379 }] };
@@ -10,17 +10,17 @@ const slow = new Queue('slow-queue', { connection });
 const flaky = new Queue('flaky-queue', { connection });
 
 // Workers
-const fastWorker = new Worker('fast-queue', async (job) => {
+const fastWorker = new Worker('fast-queue', async (job: Job) => {
   await new Promise(r => setTimeout(r, 30 + Math.random() * 70));
   return { processed: job.name, seq: job.data.i };
 }, { connection, concurrency: 5, blockTimeout: 1000 });
 
-const slowWorker = new Worker('slow-queue', async (job) => {
+const slowWorker = new Worker('slow-queue', async (job: Job) => {
   await new Promise(r => setTimeout(r, 400 + Math.random() * 600));
   return { result: 'done', size: job.data.size };
 }, { connection, concurrency: 1, blockTimeout: 1000 });
 
-const flakyWorker = new Worker('flaky-queue', async (job) => {
+const flakyWorker = new Worker('flaky-queue', async (job: Job) => {
   await new Promise(r => setTimeout(r, 100 + Math.random() * 200));
   if (Math.random() < 0.3) throw new Error('Random failure on attempt ' + (job.attemptsMade + 1));
   return { ok: true };

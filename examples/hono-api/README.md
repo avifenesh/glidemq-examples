@@ -28,7 +28,10 @@ Full REST API + SSE events for glide-mq queue management using `@glidemq/hono`.
 
 ```bash
 npm install
+export QUEUE_API_TOKEN="$(openssl rand -hex 32)"
 npm start
 ```
 
-Requires Valkey/Redis on localhost:6379.
+Requires Valkey/Redis on localhost:6379 and `@glidemq/hono >= 0.5.1`.
+
+Send `Authorization: Bearer <QUEUE_API_TOKEN>` on every request, including custom routes and SSE requests. `glideMQApi` requires an `authorize` callback. Only a literal `true` permits access; missing callbacks, other return values, and callback errors return `403 { "error": "Forbidden" }`. Queue allowlists restrict names after authorization and do not grant access.

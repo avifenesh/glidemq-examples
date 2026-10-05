@@ -9,7 +9,8 @@
  *
  * Run: npx tsx examples/cost-breakdown.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 async function main() {
   const queue = new TestQueue('cost-breakdown');
@@ -33,7 +34,7 @@ async function main() {
     },
   };
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     if (job.name === 'pipeline') {
       return { status: 'aggregated' };
     }

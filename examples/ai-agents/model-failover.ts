@@ -7,8 +7,9 @@
  *
  * Run: npx tsx examples/model-failover.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `model-failover-${Date.now()}`;
 
@@ -17,7 +18,7 @@ async function main() {
   let completedResult: any = null;
   let attempts: { model: string; fallbackIndex: number; error?: string }[] = [];
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     const { prompt } = job.data;
     const fallback = job.currentFallback;
 

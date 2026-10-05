@@ -9,7 +9,8 @@
  *
  * Run: npx tsx examples/budget-weighted.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 async function main() {
   const queue = new TestQueue('budget-weighted');
@@ -34,7 +35,7 @@ async function main() {
   const completed: string[] = [];
   const failed: string[] = [];
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     if (job.name === 'parent') return { status: 'done' };
 
     await job.reportUsage({

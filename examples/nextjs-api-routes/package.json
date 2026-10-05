@@ -8,8 +8,8 @@
     "start:worker": "tsx worker.ts"
   },
   "dependencies": {
-    "@glidemq/speedkey": "latest",
-    "glide-mq": "latest"
+    "@glidemq/speedkey": "^0.4.2",
+    "glide-mq": "^0.17.0"
   },
   "devDependencies": {
     "@types/node": "^22",

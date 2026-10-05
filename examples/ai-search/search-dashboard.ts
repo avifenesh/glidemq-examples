@@ -7,8 +7,9 @@
  *
  * Run: npx tsx examples/search-dashboard.ts
  */
-import { Queue, Worker } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `search-dashboard-${Date.now()}`;
 
@@ -53,7 +54,7 @@ async function main() {
   let processed = 0;
   const failIndices = new Set([3, 7, 11]);
 
-  const worker = new Worker(QUEUE, async (job) => {
+  const worker = new Worker(QUEUE, async (job: Job) => {
     processed++;
     if (processed > 15) {
       // Leave remaining 5 as waiting - skip by delaying

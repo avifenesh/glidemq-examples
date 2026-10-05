@@ -7,8 +7,9 @@
  *
  * Run: npx tsx examples/embedding-pipeline.ts
  */
-import { Queue, Worker, FlowProducer } from '../dist/index';
-import { chat, MODELS, CONNECTION, type Message } from './llm';
+import { Queue, Worker, FlowProducer } from 'glide-mq';
+import type { Job } from 'glide-mq';
+import { chat, MODELS, CONNECTION, type Message } from './llm.js';
 
 const QUEUE = `embedding-pipeline-${Date.now()}`;
 
@@ -32,7 +33,7 @@ async function main() {
 
   const worker = new Worker(
     QUEUE,
-    async (job) => {
+    async (job: Job) => {
       if (job.name === 'pipeline-root') {
         const children = await job.getChildrenValues();
         return { processed: Object.keys(children).length };

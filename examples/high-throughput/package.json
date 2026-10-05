@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "glide-mq": "^0.15.2"
+    "glide-mq": "^0.17.0"
   },
   "devDependencies": {
     "@types/node": "^22",

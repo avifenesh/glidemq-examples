@@ -9,11 +9,11 @@
     "with-vercel-ai-sdk": "npx tsx with-vercel-ai-sdk.ts"
   },
   "dependencies": {
-    "glide-mq": "latest",
+    "glide-mq": "^0.17.0",
     "@langchain/openai": "^0.4.4",
     "@langchain/core": "^0.3.40",
     "ai": "^6.0.141",
-    "@ai-sdk/openai": "^1.3.6"
+    "@ai-sdk/openai": "^3.0.48"
   },
   "devDependencies": {
     "@types/node": "^22",

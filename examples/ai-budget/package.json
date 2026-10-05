@@ -12,7 +12,7 @@
     "tpm-throttle": "npx tsx tpm-throttle.ts"
   },
   "dependencies": {
-    "glide-mq": "latest"
+    "glide-mq": "^0.17.0"
   },
   "devDependencies": {
     "@types/node": "^22",

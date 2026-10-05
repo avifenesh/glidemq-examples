@@ -9,12 +9,13 @@
  * No Valkey needed - uses TestQueue/TestWorker.
  * Run: npx tsx examples/streaming-sse.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 async function main() {
   const queue = new TestQueue('streaming-sse');
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     // Simulate a thinking model: reasoning first, then content
 
     const reasoningSteps = [

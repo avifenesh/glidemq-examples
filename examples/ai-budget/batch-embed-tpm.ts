@@ -8,7 +8,8 @@
  * No Valkey needed - uses TestQueue/TestWorker.
  * Run: npx tsx examples/batch-embed-tpm.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 // Embedding model pricing: text-embedding-3-small at $0.02 / 1M tokens
 const EMBED_COST_PER_TOKEN = 0.02 / 1_000_000;
@@ -48,7 +49,7 @@ async function main() {
   const timeline: { doc: string; tokens: number; cost: number; elapsed: number }[] = [];
   let completed = 0;
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     const docTokens = job.data.tokens as number;
     const cost = docTokens * EMBED_COST_PER_TOKEN;
 

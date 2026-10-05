@@ -8,7 +8,8 @@
  * No Valkey needed - uses TestQueue/TestWorker.
  * Run: npx tsx examples/multi-model-cost.ts
  */
-import { TestQueue, TestWorker } from '../dist/testing';
+import { TestQueue, TestWorker } from 'glide-mq/testing';
+import type { Job } from 'glide-mq';
 
 // Pricing per million tokens (USD)
 const PRICING: Record<string, { input: number; output: number; reasoning?: number }> = {
@@ -47,7 +48,7 @@ async function main() {
     },
   ];
 
-  const worker = new TestWorker(queue, async (job) => {
+  const worker = new TestWorker(queue, async (job: Job) => {
     if (job.name === 'parent') return { status: 'aggregated' };
 
     const model = job.data.model as string;

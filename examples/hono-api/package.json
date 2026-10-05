@@ -8,10 +8,10 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@glidemq/hono": "latest",
-    "@glidemq/speedkey": "latest",
+    "@glidemq/hono": "^0.5.1",
+    "@glidemq/speedkey": "^0.4.2",
     "@hono/node-server": "^2",
-    "glide-mq": "latest",
+    "glide-mq": "^0.17.0",
     "hono": "^4"
   },
   "devDependencies": {
