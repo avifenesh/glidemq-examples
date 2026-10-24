@@ -8,11 +8,11 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@glidemq/nestjs": "^0.2.3",
+    "@glidemq/nestjs": "^0.2.4",
     "@nestjs/common": "^11.1.18",
     "@nestjs/core": "^11.1.18",
     "@nestjs/platform-express": "^11.1.18",
-    "glide-mq": "^0.17.0",
+    "glide-mq": "^0.20.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.0"
   },

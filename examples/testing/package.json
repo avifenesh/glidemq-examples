@@ -8,7 +8,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "glide-mq": "^0.17.0"
+    "glide-mq": "^0.20.0"
   },
   "devDependencies": {
     "@types/node": "^22",

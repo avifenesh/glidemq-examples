@@ -8,9 +8,9 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@glidemq/hapi": "^0.4.2",
+    "@glidemq/hapi": "^0.4.3",
     "@hapi/hapi": "^21",
-    "glide-mq": "^0.17.0"
+    "glide-mq": "^0.20.0"
   },
   "devDependencies": {
     "@types/node": "^22",
