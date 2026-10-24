@@ -9,7 +9,7 @@
     "with-vercel-ai-sdk": "npx tsx with-vercel-ai-sdk.ts"
   },
   "dependencies": {
-    "glide-mq": "^0.17.0",
+    "glide-mq": "^0.20.0",
     "@langchain/openai": "^0.4.4",
     "@langchain/core": "^0.3.40",
     "ai": "^6.0.141",

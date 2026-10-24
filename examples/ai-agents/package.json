@@ -14,7 +14,7 @@
     "adaptive-timeout": "npx tsx adaptive-timeout.ts"
   },
   "dependencies": {
-    "glide-mq": "^0.17.0",
+    "glide-mq": "^0.20.0",
     "@glidemq/speedkey": "^0.4.2"
   },
   "devDependencies": {

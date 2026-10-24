@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@glidemq/speedkey": "^0.4.2",
-    "glide-mq": "^0.17.0"
+    "glide-mq": "^0.20.0"
   },
   "devDependencies": {
     "@types/node": "^22.19.15",

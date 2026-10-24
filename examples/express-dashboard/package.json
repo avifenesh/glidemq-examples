@@ -8,10 +8,10 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@glidemq/dashboard": "^0.4.2",
+    "@glidemq/dashboard": "^0.4.3",
     "@glidemq/speedkey": "^0.4.2",
     "express": "^5.2.1",
-    "glide-mq": "^0.17.0"
+    "glide-mq": "^0.20.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

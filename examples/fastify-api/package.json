@@ -8,9 +8,9 @@
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@glidemq/fastify": "^0.3.2",
+    "@glidemq/fastify": "^0.3.3",
     "fastify": "^5",
-    "glide-mq": "^0.17.0"
+    "glide-mq": "^0.20.0"
   },
   "devDependencies": {
     "@types/node": "^22",

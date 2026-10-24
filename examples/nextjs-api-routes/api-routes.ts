@@ -54,6 +54,7 @@ export async function POST(request: Request) {
     // does not create two jobs.
     deduplication: {
       id: payload.idempotencyKey,
+      mode: 'throttle',
       ttl: 3600000, // 1 hour
     },
   });
