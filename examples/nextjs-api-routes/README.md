@@ -48,5 +48,5 @@ or adapt the code in `api-routes.ts` into a small script.
 
 ## Further reading
 
-- [Vercel: How to run background jobs in Next.js](https://vercel.com/kb/guide/how-to-run-background-jobs-in-nextjs-on-vercel) —
+- [Vercel: How to run background jobs in Next.js](https://vercel.com/kb/guide/how-to-run-background-jobs-in-nextjs-on-vercel):
   Vercel's own guidance on work that outlives the request.
