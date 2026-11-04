@@ -19,8 +19,9 @@
   "devDependencies": {
     "@nestjs/testing": "^11.1.18",
     "@types/node": "^22",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "ts-node": "^10.9.0",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.0"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }
